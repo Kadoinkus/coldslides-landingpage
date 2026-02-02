@@ -63,9 +63,9 @@
 
             <div class="uiBody">
               <div class="slideCanvas">
-                <div class="layoutGrid" id="layoutGrid">
+                <div class="layoutGrid" id="layoutGrid" data-layout="focus">
                   <!-- Panel 1 -->
-                  <button class="panel big" type="button" data-panel="A">
+                  <button class="panel big" type="button" data-panel="A" data-type="Text">
                     <div class="panelTitle">Slide Title + Content</div>
                     <div class="panelTools" aria-hidden="true">
                       <div class="toolIcon" title="Swap type">
@@ -85,12 +85,13 @@
                         </svg>
                       </div>
                     </div>
-                    <div class="panelHint">Hover to edit · Click to swap</div>
+                    <div class="panelPreview" aria-hidden="true"></div>
+                    <div class="panelHint">Click to swap · AI auto-arranges</div>
                     <div class="badge" data-tone="blue" id="badgeA">Text</div>
                   </button>
 
                   <!-- Panel 2 -->
-                  <button class="panel small" type="button" data-panel="B">
+                  <button class="panel small" type="button" data-panel="B" data-type="Chart">
                     <div class="panelTitle">Chart</div>
                     <div class="panelTools" aria-hidden="true">
                       <div class="toolIcon" title="Swap type">
@@ -104,11 +105,13 @@
                         </svg>
                       </div>
                     </div>
+                    <div class="panelPreview" aria-hidden="true"></div>
+                    <div class="panelHint">Click to swap · AI auto-arranges</div>
                     <div class="badge" data-tone="coral" id="badgeB">Chart</div>
                   </button>
 
                   <!-- Panel 3 -->
-                  <button class="panel small" type="button" data-panel="C">
+                  <button class="panel small" type="button" data-panel="C" data-type="Timeline">
                     <div class="panelTitle">Timeline</div>
                     <div class="panelTools" aria-hidden="true">
                       <div class="toolIcon" title="Swap type">
@@ -123,16 +126,21 @@
                         </svg>
                       </div>
                     </div>
+                    <div class="panelPreview" aria-hidden="true"></div>
+                    <div class="panelHint">Click to swap · AI auto-arranges</div>
                     <div class="badge" data-tone="orange" id="badgeC">Timeline</div>
                   </button>
+                </div>
+                <div class="aiHint" id="aiHint" aria-live="polite" aria-hidden="true">
+                  <span class="aiPill">AI</span>
+                  <span class="aiMessage" id="aiHintMessage">Auto-arranged layout</span>
+                  <button class="aiAction" type="button" id="aiHintUndo">Undo</button>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Mascot + pedestal -->
-          <div class="pedestal" aria-hidden="true"></div>
-
+          <!-- Mascot -->
           <div class="mascot" aria-label="Snowman mascot">
             <!-- Replace src with your actual asset.
                  If you place the image next to this HTML, use: src="./snowman.png"
@@ -141,7 +149,7 @@
           </div>
 
           <!-- Type Picker -->
-          <div class="typePicker" id="typePicker" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Panel type picker" hidden>
+          <div class="typePicker" id="typePicker" role="dialog" aria-modal="false" aria-hidden="true" aria-label="Panel type picker" hidden>
             <header>
               <span>Panel type</span>
               <button class="close" id="closePicker">Close</button>

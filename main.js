@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById(containerId);
     if (!container) return;
     container.innerHTML = types.map(type => (
-      `<button class=\"typeItem\" type=\"button\" data-type=\"${type}\">${typeIcons[type] || ""}${type}</button>`
+      `<button class=\"typeItem\" type=\"button\" data-type=\"${type}\" aria-pressed=\"false\">${typeIcons[type] || ""}${type}</button>`
     )).join("");
   }
 
@@ -791,6 +791,10 @@ document.addEventListener("DOMContentLoaded", () => {
     B: document.getElementById("badgeB"),
     C: document.getElementById("badgeC"),
   };
+  const layoutGrid = document.getElementById("layoutGrid");
+  const aiHint = document.getElementById("aiHint");
+  const aiHintMessage = document.getElementById("aiHintMessage");
+  const aiHintUndo = document.getElementById("aiHintUndo");
 
   const toneMap = {
     Text: "blue",
@@ -800,8 +804,34 @@ document.addEventListener("DOMContentLoaded", () => {
     KPI: "blue",
     Quote: "coral",
   };
+  const titleMap = {
+    Text: "Slide Title + Content",
+    Image: "Hero Image",
+    Chart: "Chart",
+    Timeline: "Timeline",
+    KPI: "Key Metric",
+    Quote: "Quote",
+  };
+  const layoutCycle = ["focus", "split", "row"];
+  const layoutLabels = {
+    focus: "Focus layout",
+    split: "Split layout",
+    row: "Row layout",
+  };
+  const layoutForType = {
+    Text: "focus",
+    Quote: "focus",
+    Chart: "split",
+    KPI: "split",
+    Image: "row",
+    Timeline: "row",
+  };
 
   let activePanelEl = null;
+  let currentLayout = layoutGrid?.dataset?.layout || "focus";
+  let previousLayout = currentLayout;
+  let aiHintTimer = null;
+  let undoLayoutTarget = null;
 
   function showPickerNear(el){
     if (!dom.typePicker) return;
@@ -822,24 +852,106 @@ document.addEventListener("DOMContentLoaded", () => {
     dom.typePicker.style.left = left + "px";
     dom.typePicker.style.top  = top + "px";
     dom.typePicker.style.visibility = "visible";
+    syncPickerSelection(el.dataset.type);
+    const first = dom.typeGrid?.querySelector(".typeItem");
+    if (first) first.focus();
   }
 
   function hidePicker(){
     if (!dom.typePicker) return;
     dom.typePicker.hidden = true;
     dom.typePicker.setAttribute("aria-hidden", "true");
+    setActivePanel(null);
     activePanelEl = null;
   }
 
+  function setActivePanel(panel){
+    document.querySelectorAll(".panel").forEach(p => {
+      p.classList.toggle("is-active", p === panel);
+    });
+  }
+
+  function syncPickerSelection(type){
+    if (!dom.typeGrid) return;
+    dom.typeGrid.querySelectorAll(".typeItem").forEach(item => {
+      const selected = item.dataset.type === type;
+      item.setAttribute("aria-pressed", selected ? "true" : "false");
+    });
+  }
+
+  function updatePanelUI(panel, type){
+    if (!panel) return;
+    panel.dataset.type = type;
+
+    const badge = badges[panel.dataset.panel];
+    if (badge) {
+      badge.textContent = type;
+      badge.dataset.tone = toneMap[type] || "blue";
+    }
+
+    const title = panel.querySelector(".panelTitle");
+    if (title) title.textContent = titleMap[type] || type;
+
+    const preview = panel.querySelector(".panelPreview");
+    if (preview) {
+      preview.innerHTML = `${typeIcons[type] || ""}<span>${type}</span>`;
+    }
+  }
+
+  function hideAiHint(){
+    if (!aiHint) return;
+    aiHint.setAttribute("aria-hidden", "true");
+    aiHint.classList.remove("is-visible");
+    undoLayoutTarget = null;
+  }
+
+  function showAiHint(message, undoLayout){
+    if (!aiHint || !aiHintMessage) return;
+    aiHintMessage.textContent = message;
+    aiHint.setAttribute("aria-hidden", "false");
+    aiHint.classList.add("is-visible");
+    undoLayoutTarget = undoLayout || null;
+    if (aiHintUndo) aiHintUndo.hidden = !undoLayoutTarget;
+    clearTimeout(aiHintTimer);
+    aiHintTimer = setTimeout(hideAiHint, 3200);
+  }
+
+  function applyLayout(layout, options = {}){
+    if (!layoutGrid || !layout) return;
+    if (layout === currentLayout) return;
+    previousLayout = currentLayout;
+    currentLayout = layout;
+    layoutGrid.dataset.layout = layout;
+    layoutGrid.classList.remove("is-reflow");
+    void layoutGrid.offsetWidth;
+    layoutGrid.classList.add("is-reflow");
+
+    if (options.undoable) {
+      const label = layoutLabels[layout] || "New layout";
+      showAiHint(`Auto-arranged: ${label}`, previousLayout);
+    }
+  }
+
+  function suggestLayout(type){
+    const preferred = layoutForType[type];
+    if (preferred && preferred !== currentLayout) return preferred;
+    const index = layoutCycle.indexOf(currentLayout);
+    return layoutCycle[(index + 1) % layoutCycle.length];
+  }
+
   document.querySelectorAll(".panel").forEach(panel => {
+    const initialType = panel.dataset.type || "Text";
+    updatePanelUI(panel, initialType);
     panel.addEventListener("click", () => {
       activePanelEl = panel;
+      setActivePanel(panel);
       showPickerNear(panel);
     });
     panel.addEventListener("keydown", (e) => {
       if(e.key === "Enter" || e.key === " "){
         e.preventDefault();
         activePanelEl = panel;
+        setActivePanel(panel);
         showPickerNear(panel);
       }
     });
@@ -855,16 +967,21 @@ document.addEventListener("DOMContentLoaded", () => {
       if(!item || !activePanelEl) return;
       const panelToFocus = activePanelEl;
       const type = item.dataset.type;
-      const badge = badges[panelToFocus.dataset.panel];
+      updatePanelUI(panelToFocus, type);
+      syncPickerSelection(type);
 
-      if (badge) {
-        badge.textContent = type;
-        badge.dataset.tone = toneMap[type] || "blue";
-      }
-
-      toast(`Panel ${panelToFocus.dataset.panel}: ${type}`);
+      const suggested = suggestLayout(type);
+      applyLayout(suggested, { undoable: true });
       hidePicker();
       panelToFocus.focus();
+    });
+  }
+
+  if (aiHintUndo) {
+    aiHintUndo.addEventListener("click", () => {
+      if (!undoLayoutTarget) return;
+      applyLayout(undoLayoutTarget, { undoable: false });
+      hideAiHint();
     });
   }
 
@@ -878,6 +995,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("keydown", (e) => {
     if(e.key === "Escape") {
       hidePicker();
+      hideAiHint();
       setMobileMenu(false);
     }
   });
