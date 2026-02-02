@@ -786,24 +786,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  const badges = {
-    A: document.getElementById("badgeA"),
-    B: document.getElementById("badgeB"),
-    C: document.getElementById("badgeC"),
-  };
   const layoutGrid = document.getElementById("layoutGrid");
-  const aiHint = document.getElementById("aiHint");
-  const aiHintMessage = document.getElementById("aiHintMessage");
-  const aiHintUndo = document.getElementById("aiHintUndo");
-
-  const toneMap = {
-    Text: "blue",
-    Image: "orange",
-    Chart: "coral",
-    Timeline: "orange",
-    KPI: "blue",
-    Quote: "coral",
-  };
   const titleMap = {
     Text: "Slide Title + Content",
     Image: "Hero Image",
@@ -829,9 +812,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let activePanelEl = null;
   let currentLayout = layoutGrid?.dataset?.layout || "focus";
-  let previousLayout = currentLayout;
-  let aiHintTimer = null;
-  let undoLayoutTarget = null;
 
   function showPickerNear(el){
     if (!dom.typePicker) return;
@@ -883,12 +863,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!panel) return;
     panel.dataset.type = type;
 
-    const badge = badges[panel.dataset.panel];
-    if (badge) {
-      badge.textContent = type;
-      badge.dataset.tone = toneMap[type] || "blue";
-    }
-
     const title = panel.querySelector(".panelTitle");
     if (title) title.textContent = titleMap[type] || type;
 
@@ -898,38 +872,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function hideAiHint(){
-    if (!aiHint) return;
-    aiHint.setAttribute("aria-hidden", "true");
-    aiHint.classList.remove("is-visible");
-    undoLayoutTarget = null;
+  function openPickerForPanel(panel){
+    if (!panel) return;
+    activePanelEl = panel;
+    setActivePanel(panel);
+    showPickerNear(panel);
   }
 
-  function showAiHint(message, undoLayout){
-    if (!aiHint || !aiHintMessage) return;
-    aiHintMessage.textContent = message;
-    aiHint.setAttribute("aria-hidden", "false");
-    aiHint.classList.add("is-visible");
-    undoLayoutTarget = undoLayout || null;
-    if (aiHintUndo) aiHintUndo.hidden = !undoLayoutTarget;
-    clearTimeout(aiHintTimer);
-    aiHintTimer = setTimeout(hideAiHint, 3200);
-  }
-
-  function applyLayout(layout, options = {}){
+  function applyLayout(layout){
     if (!layoutGrid || !layout) return;
     if (layout === currentLayout) return;
-    previousLayout = currentLayout;
     currentLayout = layout;
     layoutGrid.dataset.layout = layout;
     layoutGrid.classList.remove("is-reflow");
     void layoutGrid.offsetWidth;
     layoutGrid.classList.add("is-reflow");
-
-    if (options.undoable) {
-      const label = layoutLabels[layout] || "New layout";
-      showAiHint(`Auto-arranged: ${label}`, previousLayout);
-    }
   }
 
   function suggestLayout(type){
@@ -943,16 +900,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const initialType = panel.dataset.type || "Text";
     updatePanelUI(panel, initialType);
     panel.addEventListener("click", () => {
-      activePanelEl = panel;
-      setActivePanel(panel);
-      showPickerNear(panel);
+      openPickerForPanel(panel);
     });
     panel.addEventListener("keydown", (e) => {
       if(e.key === "Enter" || e.key === " "){
         e.preventDefault();
-        activePanelEl = panel;
-        setActivePanel(panel);
-        showPickerNear(panel);
+        openPickerForPanel(panel);
       }
     });
   });
@@ -977,14 +930,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  if (aiHintUndo) {
-    aiHintUndo.addEventListener("click", () => {
-      if (!undoLayoutTarget) return;
-      applyLayout(undoLayoutTarget, { undoable: false });
-      hideAiHint();
-    });
-  }
-
   document.addEventListener("click", (e) => {
     if (!dom.typePicker || dom.typePicker.hidden) return;
     const clickedInsidePicker = dom.typePicker.contains(e.target);
@@ -995,7 +940,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("keydown", (e) => {
     if(e.key === "Escape") {
       hidePicker();
-      hideAiHint();
       setMobileMenu(false);
     }
   });
