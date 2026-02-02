@@ -12,10 +12,7 @@
     <nav class="nav" aria-label="Top navigation">
       <a class="brand" href="#">
         <img class="brandLogo" src="assets/logo/coldslides-logo.svg" alt="Coldslides logo" />
-        <div style="display:flex; flex-direction:column; line-height:1;">
-          <span style="font-size:18px;">COLDSLIDES</span>
-          <span style="font-size:11px; font-weight:500; letter-spacing:.10em;">FRAMEWORK FOR DECKS</span>
-        </div>
+        <span style="font-size:20px;">COLDSLIDES</span>
       </a>
 
       <div class="navLinks" id="navLinks"></div>
@@ -36,26 +33,16 @@
     <section class="hero">
       <div class="container heroGrid">
         <div>
-          <div class="eyebrow">
-            <span class="dot" data-tone="coral"></span><span class="dot" data-tone="blue"></span><span class="dot" data-tone="orange"></span>
-            AI SLIDE DECK GENERATOR
-          </div>
-
-          <h1>GENERATE<br/>YOUR DECK.</h1>
+          <h1>STOP REBUILDING<br/>THE SAME DECKS.</h1>
 
           <p class="subhead">
-            Coldslides is a modular slide framework where AI works inside <b>fixed layouts</b> and <b>flexible panels</b> —
-            so you move fast without losing control.
+            Connect your data. AI generates presentations that stay on-brand and current. Update the source, regenerate.
           </p>
 
           <div class="ctaRow">
-            <button class="btn" data-variant="coral" id="generateBtn">Generate first deck</button>
-            <button class="btn" data-variant="ghost" id="templatesBtn">Explore templates</button>
+            <button class="btn" data-variant="coral" id="generateBtn">Get started</button>
+            <button class="btn" data-variant="ghost" id="howItWorksBtn">See how it works</button>
           </div>
-
-          <div class="microline">Fixed layouts · Flexible panels · Infinite combinations</div>
-
-          <div class="trustRow" id="trustRow" role="list"></div>
         </div>
 
         <div class="visual" aria-label="Product visual mock">
@@ -165,25 +152,25 @@
         </div>
       </div>
     </section>
-    <!-- FEATURES (ordered by importance) -->
+    <!-- FEATURES -->
     <section class="section" id="features">
       <div class="container">
         <div class="sectionHead">
-          <h2>A framework that makes AI useful</h2>
+          <h2>How it works</h2>
           <p class="lead">
-            Fixed layouts keep slides clean. Flexible panels let AI be creative - and let you stay in control.
+            A framework where AI builds complete decks - and everything stays on-brand.
           </p>
         </div>
 
         <div class="showcase">
           <div class="showcaseStepsWrap">
             <div class="showcaseNav">
-              <button class="showcaseArrow" type="button" id="showcasePrev" aria-label="Previous feature">
+              <button class="showcaseArrow" type="button" id="showcasePrev" aria-label="Previous step">
                 <svg viewBox="0 0 24 24" fill="none">
                   <path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
-              <button class="showcaseArrow" type="button" id="showcaseNext" aria-label="Next feature">
+              <button class="showcaseArrow" type="button" id="showcaseNext" aria-label="Next step">
                 <svg viewBox="0 0 24 24" fill="none">
                   <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -195,7 +182,7 @@
           <div class="showcaseSticky">
             <div class="showcaseFrame" id="showcaseFrame" data-tone="blue">
               <div class="showcaseHeader">
-                <span class="showcaseLabel" id="showcaseLabel">Fixed layouts</span>
+                <span class="showcaseLabel" id="showcaseLabel">Step 1</span>
                 <span class="showcaseTag" id="showcaseTag">Layout</span>
               </div>
               <div class="showcaseScreen">
@@ -206,51 +193,46 @@
                 </div>
               </div>
               <div class="showcaseFooter">
-                <span class="screenChip" id="showcaseChip">Layout grid</span>
-                <span class="screenNote" id="showcaseNote">Snap-fit panel spacing</span>
+                <span class="screenChip" id="showcaseChip">Choose layout</span>
+                <span class="screenNote" id="showcaseNote">Structure stays locked</span>
               </div>
               <p class="showcaseDesc" id="showcaseDesc">
-                Fixed layouts keep structure locked while AI fills each panel intelligently.
+                Pick how your slides are arranged. The layout stays consistent across all slides.
               </p>
             </div>
           </div>
         </div>
 
-        <div class="cards cards--features" id="featuresCards" data-media="true" data-scroll="true"></div>
-      </div>
+        </div>
     </section>
-    <!-- TEMPLATES -->
-    <section class="section section--alt" id="templates">
+    <!-- WHY IT WORKS -->
+    <section class="section section--alt" id="why">
       <div class="container">
         <div class="sectionHead">
-          <h2>Start fast. Customize deeply.</h2>
-          <p class="lead">Templates give you structure. Panels give you freedom.</p>
+          <h2>Why it works</h2>
+          <p class="lead">The framework that makes AI-generated decks actually usable.</p>
         </div>
 
-        <div class="templateLead">
-          <div>
-            <h3>Pick a template. Drop in your visuals.</h3>
-            <p>
-              Every template ships with reserved image space, so your brand assets feel
-              intentional instead of squeezed in.
-            </p>
-          </div>
-          <div class="templateHint">
-            <span>Image slots</span>
-            <span>Brand colors</span>
-            <span>Auto layout</span>
-          </div>
-        </div>
-
-        <div class="cards cards--templates" id="templatesCards" data-media="true" data-scroll="true"></div>
+        <div class="cards cards--why" id="featuresCards" data-media="false"></div>
       </div>
     </section>
-    <!-- PRICING (placeholder section) -->
+    <!-- YOUR DATA -->
+    <section class="section section--alt" id="data">
+      <div class="container">
+        <div class="sectionHead">
+          <h2>Feed it your data</h2>
+          <p class="lead">AI analyzes your files and picks the right content for every panel.</p>
+        </div>
+
+        <div class="cards cards--data" id="dataCards" data-media="true" data-scroll="true"></div>
+      </div>
+    </section>
+    <!-- PRICING -->
     <section class="section" id="pricing">
       <div class="container">
         <div class="sectionHead">
           <h2>Pricing</h2>
-          <p class="lead">Keep this simple for now. You can swap in a real pricing table later.</p>
+          <p class="lead">Simple pricing. Start free.</p>
         </div>
 
         <div class="cards cards--pricing" id="pricingCards" data-media="false" data-price="true" data-scroll="true"></div>
@@ -261,12 +243,11 @@
       <div class="container">
         <div class="ctaBox">
           <div>
-            <h2>Stop rebuilding decks.<br/>Start working inside a system.</h2>
-            <p>Generate first. Shape every panel. Reuse decks by topic and keep them up to date.</p>
+            <h2>Ready to try it?</h2>
+            <p>Create your first deck in minutes. No credit card required.</p>
           </div>
           <div style="display:flex; gap:12px; flex-wrap:wrap;">
-            <button class="btn" data-variant="coral" id="ctaGenerate">Generate your first deck</button>
-            <button class="btn" data-variant="primary" id="ctaSignup">Sign up</button>
+            <button class="btn" data-variant="coral" id="ctaGenerate">Get started free</button>
           </div>
         </div>
 
@@ -282,8 +263,8 @@
   <script type="application/json" id="content-data">
 {
   "navLinks": [
-    { "label": "Templates", "href": "#templates" },
-    { "label": "Features", "href": "#features" },
+    { "label": "How it works", "href": "#features" },
+    { "label": "Your data", "href": "#data" },
     { "label": "Pricing", "href": "#pricing" }
   ],
   "trustItems": [
@@ -292,150 +273,136 @@
   ],
   "showcase": [
     {
-      "title": "Fixed layout grid",
-      "desc": "Lock the frame once. Every slide stays balanced while content shifts.",
+      "title": "Add your brand",
+      "desc": "Upload your logo, colors, and font. That's all AI needs to make decks that look like yours.",
       "tone": "blue",
-      "label": "Layout system",
-      "tag": "Layout",
-      "chip": "Layout grid",
-      "note": "Snap-fit panel spacing"
+      "label": "Setup once",
+      "tag": "Brand",
+      "chip": "Logo + colors",
+      "note": "One-time setup"
     },
     {
-      "title": "Flexible panel types",
-      "desc": "Swap any panel from text to chart to image without breaking the grid.",
+      "title": "AI builds the deck",
+      "desc": "Describe what you need. AI generates a complete deck - structure, content, and visuals.",
       "tone": "coral",
-      "label": "Panel library",
-      "tag": "Panels",
-      "chip": "Swap types",
-      "note": "Instant reflow"
+      "label": "Generation",
+      "tag": "AI",
+      "chip": "Complete deck",
+      "note": "Seconds, not hours"
     },
     {
-      "title": "Brand visuals ready",
-      "desc": "Reserved image space keeps your snowman, charts, and assets looking intentional.",
+      "title": "The framework holds",
+      "desc": "Fixed layouts keep every slide balanced. Flexible panels let AI be creative inside the grid.",
       "tone": "orange",
-      "label": "Brand mode",
-      "tag": "Assets",
-      "chip": "Image slots",
-      "note": "Auto crop"
+      "label": "Structure",
+      "tag": "Framework",
+      "chip": "Fixed + flexible",
+      "note": "Always consistent"
     },
     {
-      "title": "Living decks",
-      "desc": "Regenerate updates without rebuilding slides or changing layouts.",
+      "title": "Refine if you want",
+      "desc": "Swap panels, tweak content, adjust styles. Or just export - it's already done.",
       "tone": "blue",
-      "label": "Regenerate",
-      "tag": "Updates",
-      "chip": "Smart refresh",
-      "note": "Version safe"
+      "label": "Optional",
+      "tag": "Edit",
+      "chip": "Your choice",
+      "note": "Edit or export"
     }
   ],
   "cards": {
     "features": [
       {
-        "label": "Core concept",
-        "title": "Fixed layouts",
-        "body": "Choose a layout and generate instantly. Structure stays consistent - even when content changes.",
-        "tone": "blue",
-        "mediaLabel": "Layout grid"
-      },
-      {
-        "label": "Core concept",
-        "title": "Flexible panels",
-        "body": "Every panel can become anything: text, image, chart, timeline, KPI, quote - without breaking the grid.",
-        "tone": "coral",
-        "mediaLabel": "Panel swap"
-      },
-      {
-        "label": "Editing",
-        "title": "Hover-to-edit UI",
-        "body": "Tools appear only when you need them. Swap panel types, duplicate, delete, and tweak styles in seconds.",
-        "tone": "orange",
-        "mediaLabel": "Edit tools"
-      },
-      {
-        "label": "Generation",
-        "title": "Complete decks",
-        "body": "AI generates structure + content together. You get a real deck, not a blank canvas with text.",
-        "tone": "coral",
-        "mediaLabel": "Deck builder"
-      },
-      {
         "label": "Brand",
-        "title": "Assets & colors",
-        "body": "Upload brand images once. Coldslides tags, resizes, and reuses them automatically. Choose color variants per slide.",
+        "title": "Your look, automatic",
+        "body": "Upload logo, colors, font once. Every deck AI generates will look like it came from your team.",
         "tone": "blue",
         "mediaLabel": "Brand kit"
       },
       {
-        "label": "Reuse",
-        "title": "Living decks",
-        "body": "Create decks by topic (sales, pitch, updates). Update inputs later and regenerate without starting over.",
+        "label": "Framework",
+        "title": "Structure that holds",
+        "body": "Fixed layouts keep every slide balanced. AI works inside the grid, so nothing breaks.",
+        "tone": "coral",
+        "mediaLabel": "Fixed layouts"
+      },
+      {
+        "label": "Panels",
+        "title": "Any content type",
+        "body": "Text, charts, images, timelines, KPIs - AI picks what fits. You can swap anytime.",
         "tone": "orange",
-        "mediaLabel": "Auto updates"
+        "mediaLabel": "Flex panels"
+      },
+      {
+        "label": "Living",
+        "title": "Decks that update",
+        "body": "Change your inputs, regenerate. Same structure, fresh content. No rebuilding.",
+        "tone": "blue",
+        "mediaLabel": "Regenerate"
       }
     ],
-    "templates": [
+    "data": [
       {
-        "label": "Template",
-        "title": "Sales deck",
-        "body": "Generate a clean story and tailor each panel for persona, industry, and offer.",
+        "label": "Documents",
+        "title": "Upload your files",
+        "body": "CSV, spreadsheets, PDFs, docs - AI reads and understands your company data.",
         "tone": "blue",
-        "mediaLabel": "Sales story"
+        "mediaLabel": "Any file type"
       },
       {
-        "label": "Template",
-        "title": "Pitch deck",
-        "body": "From narrative to visuals - with instant layout consistency.",
+        "label": "Media",
+        "title": "Images and videos",
+        "body": "AI analyzes your visuals and picks the right one for each panel automatically.",
         "tone": "coral",
-        "mediaLabel": "Pitch flow"
+        "mediaLabel": "Smart selection"
       },
       {
-        "label": "Template",
-        "title": "Report / update",
-        "body": "Keep recurring decks alive. Regenerate with the newest numbers and visuals.",
+        "label": "Live data",
+        "title": "Always up to date",
+        "body": "When your data changes, regenerate. AI pulls the latest numbers, charts, and images.",
         "tone": "orange",
-        "mediaLabel": "Weekly update"
+        "mediaLabel": "Latest state"
       }
     ],
     "pricing": [
       {
-        "label": "Starter",
-        "title": "For individuals",
-        "body": "Generate decks, edit panels, export. Perfect for testing the workflow.",
+        "label": "Solo",
+        "title": "For trying it out",
+        "body": "Generate decks, edit panels, export. See if it fits your workflow.",
         "tone": "blue",
         "price": "$0",
-        "priceNote": "Early access",
+        "priceNote": "Free forever",
         "features": [
           "3 decks per month",
-          "Starter templates",
+          "All templates",
           "PDF export"
         ]
       },
       {
         "label": "Team",
-        "title": "For repeat decks",
-        "body": "Living decks, shared brand assets, templates per topic.",
+        "title": "For regular use",
+        "body": "Unlimited decks, shared brand assets, team collaboration.",
         "tone": "coral",
         "price": "$29",
-        "priceNote": "Per editor / mo",
+        "priceNote": "Per user / mo",
         "featured": true,
         "features": [
           "Unlimited decks",
-          "Shared brand kit",
-          "Team templates",
+          "Brand kit",
+          "Team sharing",
           "PPT + PDF export"
         ]
       },
       {
-        "label": "Enterprise",
-        "title": "For automation",
-        "body": "Remote generation, website embed, deeper integrations.",
+        "label": "Company",
+        "title": "For organizations",
+        "body": "Admin controls, API access, and dedicated support.",
         "tone": "orange",
-        "price": "Let's talk",
-        "priceNote": "Custom terms",
+        "price": "Custom",
+        "priceNote": "Let's talk",
         "features": [
           "SSO + admin",
           "API access",
-          "Dedicated onboarding",
+          "Onboarding",
           "Priority support"
         ]
       }

@@ -62,23 +62,24 @@ button:focus-visible{
   letter-spacing:.02em;
 }
 .brandLogo{
-  width:42px;
-  height:42px;
+  width:32px;
+  height:32px;
   display:block;
 }
 .navLinks{
   display:flex;
   align-items:center;
-  gap:26px;
+  gap:32px;
   color:rgba(13,15,18,.80);
   font-weight:600;
+  margin-left:auto;
+  margin-right:32px;
 }
-.navLinks a{ padding:8px 10px; border-radius:10px; }
+.navLinks a{ padding:8px 12px; border-radius:10px; }
 .navLinks a:hover{ background:rgba(255,255,255,.65); }
 
 .navCta{
   display:flex;
-  gap:10px;
   align-items:center;
 }
 .mobileMenu{
@@ -814,6 +815,29 @@ h1{
 .cards--pricing .card{
   padding: 22px;
 }
+.cards--why{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.cards--why .card{
+  grid-column: span 1;
+  text-align:center;
+  padding: 28px 22px;
+}
+.cards--why .card strong{
+  display:inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(13,15,18,.06);
+  margin-bottom: 14px;
+}
+.cards--why .card h3{
+  font-size: 18px;
+}
+.cards--why .card p{
+  font-size: 14px;
+}
 .cards--pricing .card{
   background: rgba(255,255,255,.92);
   border: 1px solid rgba(13,15,18,.12);
@@ -1078,9 +1102,11 @@ footer{
   }
   .cards .card{ grid-column: span 6; }
   .cards--pricing .card--featured{ transform: none; }
+  .cards--why{ grid-template-columns: repeat(2, 1fr); }
   .ctaBox{ flex-direction:column; align-items:flex-start; }
 }
 @media (max-width: 620px){
+  .cards--why{ grid-template-columns: 1fr; }
   .navLinks{ display:none; }
   .hamburger{
     display:inline-flex;

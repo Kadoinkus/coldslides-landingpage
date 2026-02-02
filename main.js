@@ -8,8 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
     Quote: "<svg viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M7 11h4v8H5v-6l2-2zm10 0h4v8h-6v-6l2-2z\" stroke=\"rgba(255,255,255,.9)\" stroke-width=\"2\" stroke-linejoin=\"round\"/></svg>",
   };
 
-  const checkIcon = "<span class=\"check\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M20 7L10 17l-4-4\" stroke=\"rgba(63,103,255,.95)\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></span>";
-
   function readInlineContent(){
     const el = document.getElementById("content-data");
     if (!el) return null;
@@ -41,14 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) return;
     container.innerHTML = links.map(link => (
       `<a href=\"${link.href}\">${link.label}</a>`
-    )).join("");
-  }
-
-  function renderTrustRow(containerId, items){
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    container.innerHTML = items.map(item => (
-      `<span role=\"listitem\" title=\"${item.title}\">${checkIcon}<span>${item.text}</span></span>`
     )).join("");
   }
 
@@ -86,6 +76,14 @@ document.addEventListener("DOMContentLoaded", () => {
     )).join("");
   }
 
+  function renderTypePicker(containerId, types){
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = types.map(type => (
+      `<button class=\"typeItem\" type=\"button\" data-type=\"${type}\">${typeIcons[type] || ""}${type}</button>`
+    )).join("");
+  }
+
   function renderShowcase(containerId, items){
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -106,17 +104,8 @@ document.addEventListener("DOMContentLoaded", () => {
     )).join("");
   }
 
-  function renderTypePicker(containerId, types){
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    container.innerHTML = types.map(type => (
-      `<button class=\"typeItem\" type=\"button\" data-type=\"${type}\">${typeIcons[type] || ""}${type}</button>`
-    )).join("");
-  }
-
   function hydrateContent(data){
     const navLinks = data?.navLinks || [];
-    const trustItems = data?.trustItems || [];
     const cards = data?.cards || {};
     const panelTypes = data?.panelTypes || Object.keys(typeIcons);
     const showcase = data?.showcase || [];
@@ -124,9 +113,8 @@ document.addEventListener("DOMContentLoaded", () => {
     renderLinks("navLinks", navLinks);
     renderLinks("footerLinks", navLinks);
     renderLinks("mobileMenu", navLinks);
-    renderTrustRow("trustRow", trustItems);
     renderCards("featuresCards", cards.features || []);
-    renderCards("templatesCards", cards.templates || []);
+    renderCards("dataCards", cards.data || []);
     renderCards("pricingCards", cards.pricing || []);
     renderTypePicker("typeGrid", panelTypes);
     renderShowcase("showcaseSteps", showcase);
@@ -224,13 +212,117 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  function setupShowcase(){
+    const steps = Array.from(document.querySelectorAll(".showcaseStep"));
+    if (!steps.length) return;
+
+    const frame = document.getElementById("showcaseFrame");
+    const label = document.getElementById("showcaseLabel");
+    const tag = document.getElementById("showcaseTag");
+    const chip = document.getElementById("showcaseChip");
+    const note = document.getElementById("showcaseNote");
+    const desc = document.getElementById("showcaseDesc");
+    const stepsContainer = document.getElementById("showcaseSteps");
+    const prevBtn = document.getElementById("showcasePrev");
+    const nextBtn = document.getElementById("showcaseNext");
+
+    if (!frame || !label || !tag || !chip || !note || !desc) return;
+
+    const activate = (step) => {
+      if (!step) return;
+      steps.forEach((item) => item.classList.remove("is-active"));
+      step.classList.add("is-active");
+      frame.dataset.tone = step.dataset.tone || "blue";
+      label.textContent = step.dataset.label || label.textContent;
+      tag.textContent = step.dataset.tag || tag.textContent;
+      chip.textContent = step.dataset.chip || chip.textContent;
+      note.textContent = step.dataset.note || note.textContent;
+      desc.textContent = step.dataset.desc || desc.textContent;
+    };
+
+    let dragMoved = false;
+    activate(steps[0]);
+
+    // Click handlers
+    steps.forEach((step) => {
+      step.addEventListener("click", () => {
+        if (!dragMoved) activate(step);
+      });
+    });
+
+    // Arrow navigation
+    if (stepsContainer && prevBtn && nextBtn) {
+      const updateArrows = () => {
+        const maxScroll = stepsContainer.scrollWidth - stepsContainer.clientWidth;
+        prevBtn.disabled = stepsContainer.scrollLeft <= 2;
+        nextBtn.disabled = stepsContainer.scrollLeft >= maxScroll - 2;
+      };
+
+      const scrollByAmount = () => Math.round(stepsContainer.clientWidth * 0.82);
+
+      prevBtn.addEventListener("click", () => {
+        stepsContainer.scrollBy({ left: -scrollByAmount(), behavior: "smooth" });
+      });
+      nextBtn.addEventListener("click", () => {
+        stepsContainer.scrollBy({ left: scrollByAmount(), behavior: "smooth" });
+      });
+
+      stepsContainer.addEventListener("scroll", updateArrows, { passive: true });
+      updateArrows();
+    }
+
+    // Drag/pointer handlers for mobile
+    if (stepsContainer) {
+      let isDragging = false;
+      let startX = 0;
+      let startScroll = 0;
+      let startStep = null;
+
+      stepsContainer.addEventListener("pointerdown", (e) => {
+        if (e.pointerType === "mouse" && e.button !== 0) return;
+        isDragging = true;
+        dragMoved = false;
+        startX = e.clientX;
+        startScroll = stepsContainer.scrollLeft;
+        startStep = e.target.closest?.(".showcaseStep") || null;
+        stepsContainer.classList.add("is-dragging");
+        stepsContainer.setPointerCapture?.(e.pointerId);
+      });
+
+      stepsContainer.addEventListener("pointermove", (e) => {
+        if (!isDragging) return;
+        const dx = e.clientX - startX;
+        if (Math.abs(dx) > 6) {
+          dragMoved = true;
+        }
+        stepsContainer.scrollLeft = startScroll - dx;
+        if (dragMoved) e.preventDefault();
+      });
+
+      const endDrag = (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        stepsContainer.classList.remove("is-dragging");
+        stepsContainer.releasePointerCapture?.(e.pointerId);
+        if (!dragMoved && startStep) {
+          activate(startStep);
+        }
+        dragMoved = false;
+        startStep = null;
+      };
+
+      stepsContainer.addEventListener("pointerup", endDrag);
+      stepsContainer.addEventListener("pointercancel", endDrag);
+      stepsContainer.addEventListener("pointerleave", endDrag);
+    }
+  }
+
   const dom = {
     yearEl: document.getElementById("year"),
     signupBtn: document.getElementById("signupBtn"),
     generateBtn: document.getElementById("generateBtn"),
-    templatesBtn: document.getElementById("templatesBtn"),
+    howItWorksBtn: document.getElementById("howItWorksBtn"),
     ctaGenerate: document.getElementById("ctaGenerate"),
-    ctaSignup: document.getElementById("ctaSignup"),
     typePicker: document.getElementById("typePicker"),
     typeGrid: document.getElementById("typeGrid"),
     closePicker: document.getElementById("closePicker"),
@@ -277,147 +369,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   bindToast(dom.signupBtn, "Sign up flow goes here.");
-  bindToast(dom.ctaSignup, "Sign up flow goes here.");
   bindToast(dom.generateBtn, "This would open the AI generator.");
   bindToast(dom.ctaGenerate, "This would open the AI generator.");
 
-  if (dom.templatesBtn) {
-    dom.templatesBtn.addEventListener("click", () => {
-      const target = document.getElementById("templates");
+  if (dom.howItWorksBtn) {
+    dom.howItWorksBtn.addEventListener("click", () => {
+      const target = document.getElementById("features");
       if (target) target.scrollIntoView({ behavior: "smooth" });
     });
-  }
-
-  function setupShowcase(){
-    const steps = Array.from(document.querySelectorAll(".showcaseStep"));
-    if (!steps.length) return;
-
-    const frame = document.getElementById("showcaseFrame");
-    const label = document.getElementById("showcaseLabel");
-    const tag = document.getElementById("showcaseTag");
-    const chip = document.getElementById("showcaseChip");
-    const note = document.getElementById("showcaseNote");
-    const desc = document.getElementById("showcaseDesc");
-    const stepsContainer = document.getElementById("showcaseSteps");
-    const prevBtn = document.getElementById("showcasePrev");
-    const nextBtn = document.getElementById("showcaseNext");
-
-    if (!frame || !label || !tag || !chip || !note || !desc) return;
-
-    const activate = (step) => {
-      if (!step) return;
-      steps.forEach((item) => item.classList.remove("is-active"));
-      step.classList.add("is-active");
-      frame.dataset.tone = step.dataset.tone || "blue";
-      label.textContent = step.dataset.label || label.textContent;
-      tag.textContent = step.dataset.tag || tag.textContent;
-      chip.textContent = step.dataset.chip || chip.textContent;
-      note.textContent = step.dataset.note || note.textContent;
-      desc.textContent = step.dataset.desc || desc.textContent;
-    };
-
-    let dragMoved = false;
-    activate(steps[0]);
-
-    // 1. IntersectionObserver - desktop only (disabled on mobile where layout is horizontal)
-    const isMobile = window.matchMedia && window.matchMedia("(max-width: 620px)").matches;
-    if (!isMobile) {
-      let observer = null;
-
-      const createObserver = () => {
-        if (observer) return;
-        observer = new IntersectionObserver((entries) => {
-          const visible = entries
-            .filter((entry) => entry.isIntersecting)
-            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-          if (visible) activate(visible.target);
-        }, { threshold: [0.4, 0.6, 0.85], rootMargin: "-10% 0px -35% 0px" });
-        steps.forEach((step) => observer.observe(step));
-      };
-
-      const destroyObserver = () => {
-        if (!observer) return;
-        observer.disconnect();
-        observer = null;
-      };
-
-      destroyObserver();
-    }
-
-    // 2. Click handlers - always (works on both desktop and mobile)
-    steps.forEach((step) => {
-      step.addEventListener("click", () => activate(step));
-    });
-
-    // 3. Arrow navigation - always (works on both desktop and mobile)
-    if (stepsContainer && prevBtn && nextBtn) {
-      const updateArrows = () => {
-        const maxScroll = stepsContainer.scrollWidth - stepsContainer.clientWidth;
-        prevBtn.disabled = stepsContainer.scrollLeft <= 2;
-        nextBtn.disabled = stepsContainer.scrollLeft >= maxScroll - 2;
-      };
-
-      const scrollByAmount = () => Math.round(stepsContainer.clientWidth * 0.82);
-
-      prevBtn.addEventListener("click", () => {
-        stepsContainer.scrollBy({ left: -scrollByAmount(), behavior: "smooth" });
-      });
-      nextBtn.addEventListener("click", () => {
-        stepsContainer.scrollBy({ left: scrollByAmount(), behavior: "smooth" });
-      });
-
-      stepsContainer.addEventListener("scroll", () => {
-        updateArrows();
-      }, { passive: true });
-
-      updateArrows();
-    }
-
-    // 4. Drag/pointer handlers - always (works on both desktop and mobile)
-    if (stepsContainer) {
-      let isDragging = false;
-      let startX = 0;
-      let startScroll = 0;
-      let startStep = null;
-
-      stepsContainer.addEventListener("pointerdown", (e) => {
-        if (e.pointerType === "mouse" && e.button !== 0) return;
-        isDragging = true;
-        dragMoved = false;
-        startX = e.clientX;
-        startScroll = stepsContainer.scrollLeft;
-        startStep = e.target.closest?.(".showcaseStep") || null;
-        stepsContainer.classList.add("is-dragging");
-        stepsContainer.setPointerCapture?.(e.pointerId);
-      });
-
-      stepsContainer.addEventListener("pointermove", (e) => {
-        if (!isDragging) return;
-        const dx = e.clientX - startX;
-        if (Math.abs(dx) > 6) {
-          dragMoved = true;
-        }
-        stepsContainer.scrollLeft = startScroll - dx;
-        if (dragMoved) e.preventDefault();
-      });
-
-      const endDrag = (e) => {
-        if (!isDragging) return;
-        isDragging = false;
-        stepsContainer.classList.remove("is-dragging");
-        stepsContainer.releasePointerCapture?.(e.pointerId);
-        if (!dragMoved) {
-          const targetStep = startStep || e.target.closest?.(".showcaseStep");
-          if (targetStep) activate(targetStep);
-        }
-        dragMoved = false;
-        startStep = null;
-      };
-
-      stepsContainer.addEventListener("pointerup", endDrag);
-      stepsContainer.addEventListener("pointercancel", endDrag);
-      stepsContainer.addEventListener("pointerleave", endDrag);
-    }
   }
 
   function setMobileMenu(open){
