@@ -123,6 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupShowcase();
     setupCardScroll();
     setupLayoutDemo();
+    setupSnowyChat();
   }
 
   function setupLayoutDemo() {
@@ -135,6 +136,56 @@ document.addEventListener("DOMContentLoaded", () => {
         opt.classList.add("active");
       });
     });
+  }
+
+  function setupSnowyChat() {
+    const chatMessages = document.getElementById("chatMessages");
+    if (!chatMessages) return;
+
+    const conversations = [
+      [
+        { type: "user", text: "Can you add a chart showing Q3 revenue?" },
+        { type: "snowy", text: "Done! I've added a bar chart to slide 4 with Q3 revenue data from your connected spreadsheet." }
+      ],
+      [
+        { type: "user", text: "Make the title on slide 2 bigger" },
+        { type: "snowy", text: "I've increased the title size to 48px. Want me to apply this to all slides?" }
+      ],
+      [
+        { type: "user", text: "Change the color scheme to blue" },
+        { type: "snowy", text: "Updated! All accent colors are now using your brand blue. The charts and icons match too." }
+      ],
+      [
+        { type: "user", text: "Add our latest case study to the deck" },
+        { type: "snowy", text: "I found the Acme Corp case study in your files. Added it as a new slide with key metrics highlighted." }
+      ],
+      [
+        { type: "user", text: "Generate an image for the intro slide" },
+        { type: "snowy", text: "Created a custom illustration that matches your brand style. It shows a team collaborating on data." }
+      ]
+    ];
+
+    let currentIndex = 0;
+
+    function showConversation(index) {
+      const conv = conversations[index];
+      chatMessages.innerHTML = "";
+
+      conv.forEach((msg, i) => {
+        const bubble = document.createElement("div");
+        bubble.className = `chatBubble chatBubble--${msg.type}`;
+        bubble.innerHTML = `<span>${msg.text}</span>`;
+        bubble.style.animationDelay = `${i * 1}s`;
+        chatMessages.appendChild(bubble);
+      });
+    }
+
+    showConversation(0);
+
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % conversations.length;
+      showConversation(currentIndex);
+    }, 6000);
   }
 
   function setupCardScroll() {
