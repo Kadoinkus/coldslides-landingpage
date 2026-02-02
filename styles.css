@@ -823,6 +823,42 @@ h1{
   flex-direction: column;
 }
 
+/* Platform Section */
+.platformGrid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px 32px;
+  margin-top: 32px;
+}
+.platformFeature{
+  padding: 24px;
+  background: rgba(255,255,255,.75);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+.platformIcon{
+  margin-bottom: 14px;
+  color: var(--blue);
+}
+.platformIcon svg{
+  width: 28px;
+  height: 28px;
+}
+.platformFeature h3{
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+}
+.platformFeature p{
+  margin: 0;
+  color: rgba(13,15,18,.65);
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 600;
+}
+
 /* Framework Section */
 .frameworkGrid{
   display: grid;
@@ -1300,6 +1336,9 @@ footer{
     max-width: 84%;
     scroll-snap-align: start;
   }
+  .platformGrid{
+    grid-template-columns: repeat(2, 1fr);
+  }
   .cards--pricing{
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1311,6 +1350,7 @@ footer{
   .frameworkGrid{ grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 620px){
+  .platformGrid{ grid-template-columns: 1fr; }
   .frameworkGrid{ grid-template-columns: 1fr; }
   .cards--pricing{ grid-template-columns: 1fr; }
   .navLinks{ display:none; }
