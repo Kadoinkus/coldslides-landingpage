@@ -140,56 +140,374 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function setupSnowyChat() {
     const chatMessages = document.getElementById("chatMessages");
-    if (!chatMessages) return;
+    const previewContent = document.getElementById("previewContent");
+    const previewTitle = document.getElementById("previewTitle");
+    const previewSlide = document.getElementById("previewSlide");
+    const snowyPills = document.getElementById("snowyPills");
+
+    if (!chatMessages || !previewContent) return;
 
     const conversations = [
-      [
-        { type: "user", text: "Can you add a chart showing Q3 revenue?" },
-        { type: "snowy", text: "Done! I've added a bar chart to slide 4 with Q3 revenue data from your connected spreadsheet." }
-      ],
-      [
-        { type: "user", text: "Make the title on slide 2 bigger" },
-        { type: "snowy", text: "I've increased the title size to 48px. Want me to apply this to all slides?" }
-      ],
-      [
-        { type: "user", text: "Change the color scheme to blue" },
-        { type: "snowy", text: "Updated! All accent colors are now using your brand blue. The charts and icons match too." }
-      ],
-      [
-        { type: "user", text: "Add our latest case study to the deck" },
-        { type: "snowy", text: "I found the Acme Corp case study in your files. Added it as a new slide with key metrics highlighted." }
-      ],
-      [
-        { type: "user", text: "Generate an image for the intro slide" },
-        { type: "snowy", text: "Created a custom illustration that matches your brand style. It shows a team collaborating on data." }
-      ]
+      {
+        messages: [
+          { type: "user", text: "Can you add a chart showing Q3 revenue?" },
+          { type: "ollie", text: "Done! I've added a bar chart to slide 4 with Q3 revenue data from your connected spreadsheet." }
+        ],
+        preview: "chart",
+        pillIndex: 0
+      },
+      {
+        messages: [
+          { type: "user", text: "Make the title on slide 2 bigger" },
+          { type: "ollie", text: "I've increased the title size to 48px. Want me to apply this to all slides?" }
+        ],
+        preview: "title",
+        pillIndex: 1
+      },
+      {
+        messages: [
+          { type: "user", text: "Change the color scheme to blue" },
+          { type: "ollie", text: "Updated! All accent colors are now using your brand blue. The charts and icons match too." }
+        ],
+        preview: "colors",
+        pillIndex: 2
+      },
+      {
+        messages: [
+          { type: "user", text: "Add an image to the intro slide" },
+          { type: "ollie", text: "Created a custom illustration that matches your brand style. It shows a team collaborating on data." }
+        ],
+        preview: "image",
+        pillIndex: 3
+      },
+      {
+        messages: [
+          { type: "user", text: "Update the data to show this month's numbers" },
+          { type: "ollie", text: "Done! I've pulled the latest figures from your connected spreadsheet. Revenue is up 23%!" }
+        ],
+        preview: "data",
+        pillIndex: 4
+      }
     ];
 
     let currentIndex = 0;
+    let autoAdvanceTimer = null;
+    let isAnimating = false;
+    let abortController = null;
 
-    function showConversation(index) {
-      const conv = conversations[index];
-      chatMessages.innerHTML = "";
+    // Typing animation with abort support
+    function typeMessage(element, text, speed = 25, signal) {
+      return new Promise((resolve, reject) => {
+        let i = 0;
+        element.textContent = "";
+        const interval = setInterval(() => {
+          if (signal?.aborted) {
+            clearInterval(interval);
+            reject(new Error("aborted"));
+            return;
+          }
+          element.textContent = text.slice(0, ++i);
+          if (i >= text.length) {
+            clearInterval(interval);
+            resolve();
+          }
+        }, speed);
 
-      conv.forEach((msg, i) => {
-        const bubble = document.createElement("div");
-        bubble.className = `chatBubble chatBubble--${msg.type}`;
-        bubble.innerHTML = `<span>${msg.text}</span>`;
-        bubble.style.animationDelay = `${i * 1}s`;
-        chatMessages.appendChild(bubble);
+        // Clear interval if aborted
+        signal?.addEventListener("abort", () => {
+          clearInterval(interval);
+          reject(new Error("aborted"));
+        });
       });
     }
 
-    showConversation(0);
+    // Cancel current animation
+    function cancelAnimation() {
+      if (abortController) {
+        abortController.abort();
+        abortController = null;
+      }
+      isAnimating = false;
+    }
 
-    setInterval(() => {
-      currentIndex = (currentIndex + 1) % conversations.length;
-      showConversation(currentIndex);
-    }, 6000);
+    // Create typing indicator element
+    function createTypingIndicator() {
+      const typing = document.createElement("div");
+      typing.className = "chatTyping";
+      typing.innerHTML = "<span></span><span></span><span></span>";
+      return typing;
+    }
+
+    // Preview animations
+    function showPreview(type) {
+      previewContent.innerHTML = "";
+      previewTitle.classList.remove("enlarged");
+      previewSlide.removeAttribute("data-theme");
+
+      switch (type) {
+        case "chart":
+          previewContent.innerHTML = `
+            <div class="previewChart">
+              <div class="previewBar"></div>
+              <div class="previewBar"></div>
+              <div class="previewBar"></div>
+              <div class="previewBar"></div>
+              <div class="previewBar"></div>
+            </div>
+          `;
+          setTimeout(() => {
+            previewContent.querySelectorAll(".previewBar").forEach(bar => {
+              bar.classList.add("animate");
+            });
+          }, 400);
+          break;
+
+        case "title":
+          previewContent.innerHTML = `
+            <div class="previewPlaceholder">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+            </div>
+          `;
+          setTimeout(() => {
+            previewTitle.classList.add("enlarged");
+          }, 400);
+          break;
+
+        case "colors":
+          previewContent.innerHTML = `
+            <div class="previewChart">
+              <div class="previewBar"></div>
+              <div class="previewBar"></div>
+              <div class="previewBar"></div>
+              <div class="previewBar"></div>
+              <div class="previewBar"></div>
+            </div>
+          `;
+          setTimeout(() => {
+            previewSlide.setAttribute("data-theme", "blue");
+            previewContent.querySelectorAll(".previewBar").forEach(bar => {
+              bar.classList.add("animate");
+            });
+          }, 400);
+          break;
+
+        case "image":
+          previewContent.innerHTML = `
+            <div class="previewImage">
+              <svg viewBox="0 0 24 24" fill="none">
+                <rect x="4" y="5" width="16" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+                <circle cx="9" cy="10" r="2" stroke="currentColor" stroke-width="2"/>
+                <path d="M4 15l4-4 3 3 5-5 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          `;
+          setTimeout(() => {
+            const img = previewContent.querySelector(".previewImage");
+            if (img) img.classList.add("animate");
+          }, 400);
+          break;
+
+        case "data":
+          previewContent.innerHTML = `
+            <div class="previewData">
+              <div class="previewKPI">
+                <div class="value" data-target="847">0</div>
+                <div class="label">Revenue (K)</div>
+              </div>
+              <div class="previewKPI">
+                <div class="value" data-target="23">0</div>
+                <div class="label">Growth %</div>
+              </div>
+            </div>
+          `;
+          setTimeout(() => {
+            previewContent.querySelectorAll(".previewKPI .value").forEach(el => {
+              const target = parseInt(el.dataset.target) || 0;
+              animateNumber(el, target);
+            });
+          }, 400);
+          break;
+
+        default:
+          previewContent.innerHTML = `
+            <div class="previewPlaceholder">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+            </div>
+          `;
+      }
+    }
+
+    // Number count-up animation
+    function animateNumber(element, target, duration = 1200) {
+      const start = 0;
+      const startTime = performance.now();
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(start + (target - start) * eased);
+        element.textContent = current;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    // Update pills with fill animation
+    function updatePills(pillIndex) {
+      if (!snowyPills) return;
+      snowyPills.querySelectorAll(".snowyPill").forEach((pill, i) => {
+        // Remove active from all, add no-transition to reset
+        pill.classList.remove("active");
+        pill.classList.add("no-transition");
+      });
+
+      // Force reflow
+      snowyPills.offsetHeight;
+
+      // Add active to current pill and start fill animation
+      snowyPills.querySelectorAll(".snowyPill").forEach((pill, i) => {
+        pill.classList.remove("no-transition");
+        if (i === pillIndex) {
+          pill.classList.add("active");
+        }
+      });
+    }
+
+    // Abortable delay
+    function delay(ms, signal) {
+      return new Promise((resolve, reject) => {
+        const timeout = setTimeout(resolve, ms);
+        signal?.addEventListener("abort", () => {
+          clearTimeout(timeout);
+          reject(new Error("aborted"));
+        });
+      });
+    }
+
+    // Show conversation with typing effect
+    async function showConversation(index, animate = true) {
+      // Cancel any ongoing animation
+      cancelAnimation();
+
+      isAnimating = true;
+      abortController = new AbortController();
+      const signal = abortController.signal;
+
+      const conv = conversations[index];
+      currentIndex = index;
+
+      updatePills(conv.pillIndex);
+
+      // Clear existing messages
+      chatMessages.innerHTML = "";
+
+      if (animate) {
+        try {
+          // Show each message with typing effect
+          for (let i = 0; i < conv.messages.length; i++) {
+            const msg = conv.messages[i];
+
+            if (msg.type === "ollie") {
+              const typing = createTypingIndicator();
+              chatMessages.appendChild(typing);
+              await delay(800, signal);
+              typing.remove();
+            }
+
+            const bubble = document.createElement("div");
+            bubble.className = `chatBubble chatBubble--${msg.type}`;
+            const span = document.createElement("span");
+            bubble.appendChild(span);
+            chatMessages.appendChild(bubble);
+
+            // Trigger visibility
+            requestAnimationFrame(() => {
+              bubble.classList.add("visible");
+            });
+
+            await typeMessage(span, msg.text, msg.type === "user" ? 20 : 15, signal);
+
+            // Show preview after first Snowy response
+            if (msg.type === "ollie" && i === 1) {
+              showPreview(conv.preview);
+            }
+
+            if (i < conv.messages.length - 1) {
+              await delay(300, signal);
+            }
+          }
+        } catch (e) {
+          // Animation was aborted, exit silently
+          return;
+        }
+      } else {
+        // Instant show (no animation)
+        conv.messages.forEach((msg, i) => {
+          const bubble = document.createElement("div");
+          bubble.className = `chatBubble chatBubble--${msg.type} visible`;
+          bubble.innerHTML = `<span>${msg.text}</span>`;
+          chatMessages.appendChild(bubble);
+        });
+        showPreview(conv.preview);
+      }
+
+      isAnimating = false;
+      abortController = null;
+    }
+
+    // Go to specific conversation
+    function goToConversation(index, animate = true) {
+      clearAutoAdvance();
+      showConversation(index, animate);
+      startAutoAdvance();
+    }
+
+    // Auto-advance timer
+    function startAutoAdvance() {
+      clearAutoAdvance();
+
+      autoAdvanceTimer = setTimeout(() => {
+        const nextIndex = (currentIndex + 1) % conversations.length;
+        showConversation(nextIndex);
+        startAutoAdvance();
+      }, 6000);
+    }
+
+    function clearAutoAdvance() {
+      if (autoAdvanceTimer) {
+        clearTimeout(autoAdvanceTimer);
+        autoAdvanceTimer = null;
+      }
+    }
+
+    // Pill click handlers
+    if (snowyPills) {
+      snowyPills.querySelectorAll(".snowyPill").forEach(pill => {
+        pill.addEventListener("click", () => {
+          const pillIndex = parseInt(pill.dataset.index);
+          if (!isNaN(pillIndex)) {
+            goToConversation(pillIndex);
+          }
+        });
+      });
+    }
+
+    // Initialize
+    showConversation(0);
+    startAutoAdvance();
   }
 
   function setupCardScroll() {
-    const scrollContainers = document.querySelectorAll('.cards[data-scroll="true"]');
+    const scrollContainers = document.querySelectorAll('[data-scroll="true"]');
 
     scrollContainers.forEach((container) => {
       let isDragging = false;
@@ -198,8 +516,8 @@ document.addEventListener("DOMContentLoaded", () => {
       let currentX = 0;
 
       const getCardWidth = () => {
-        const card = container.querySelector(".card");
-        if (!card) return container.clientWidth * 0.84;
+        const card = container.querySelector(".card, .platformFeature");
+        if (!card) return container.clientWidth * 0.85;
         const style = getComputedStyle(container);
         const gap = parseFloat(style.gap) || 12;
         return card.offsetWidth + gap;
