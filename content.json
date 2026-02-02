@@ -1,7 +1,7 @@
 {
   "navLinks": [
     { "label": "How it works", "href": "#features" },
-    { "label": "Your data", "href": "#data" },
+    { "label": "The framework", "href": "#framework" },
     { "label": "Pricing", "href": "#pricing" }
   ],
   "trustItems": [
@@ -10,94 +10,64 @@
   ],
   "showcase": [
     {
-      "title": "Add your brand",
-      "desc": "Upload your logo, colors, and font. That's all AI needs to make decks that look like yours.",
+      "title": "Connect your data",
+      "desc": "Upload files, images, spreadsheets. AI reads and understands your company content.",
       "tone": "blue",
-      "label": "Setup once",
+      "label": "Step 1",
+      "tag": "Input",
+      "chip": "Your files",
+      "note": "Any format"
+    },
+    {
+      "title": "Add your brand",
+      "desc": "Logo, colors, fonts. Every deck AI generates will look like it came from your team.",
+      "tone": "coral",
+      "label": "Step 2",
       "tag": "Brand",
-      "chip": "Logo + colors",
+      "chip": "Your look",
       "note": "One-time setup"
     },
     {
       "title": "AI builds the deck",
-      "desc": "Describe what you need. AI generates a complete deck - structure, content, and visuals.",
-      "tone": "coral",
-      "label": "Generation",
-      "tag": "AI",
+      "desc": "Describe what you need. AI picks the right content and generates a complete presentation.",
+      "tone": "orange",
+      "label": "Step 3",
+      "tag": "Generate",
       "chip": "Complete deck",
       "note": "Seconds, not hours"
     },
     {
-      "title": "The framework holds",
-      "desc": "Fixed layouts keep every slide balanced. Flexible panels let AI be creative inside the grid.",
-      "tone": "orange",
-      "label": "Structure",
-      "tag": "Framework",
-      "chip": "Fixed + flexible",
-      "note": "Always consistent"
-    },
-    {
-      "title": "Refine if you want",
-      "desc": "Swap panels, tweak content, adjust styles. Or just export - it's already done.",
+      "title": "Update anytime",
+      "desc": "Data changed? Regenerate. Same structure, fresh content. No rebuilding from scratch.",
       "tone": "blue",
-      "label": "Optional",
-      "tag": "Edit",
-      "chip": "Your choice",
-      "note": "Edit or export"
+      "label": "Step 4",
+      "tag": "Regenerate",
+      "chip": "Always current",
+      "note": "One click"
     }
   ],
   "cards": {
-    "features": [
+    "framework": [
       {
-        "label": "Brand",
-        "title": "Your look, automatic",
-        "body": "Upload logo, colors, font once. Every deck AI generates will look like it came from your team.",
+        "label": "100+ layouts",
+        "title": "AI picks the right grid",
+        "body": "Up to 6 panels per slide, in different configurations. AI chooses the layout that fits your content.",
         "tone": "blue",
-        "mediaLabel": "Brand kit"
+        "mediaLabel": "Smart layouts"
       },
       {
-        "label": "Framework",
-        "title": "Structure that holds",
-        "body": "Fixed layouts keep every slide balanced. AI works inside the grid, so nothing breaks.",
+        "label": "Auto-arrange",
+        "title": "Panels that adapt",
+        "body": "Add or remove a panel - the grid rearranges automatically. No manual resizing, no broken slides.",
         "tone": "coral",
-        "mediaLabel": "Fixed layouts"
+        "mediaLabel": "Always fits"
       },
       {
-        "label": "Panels",
-        "title": "Any content type",
-        "body": "Text, charts, images, timelines, KPIs - AI picks what fits. You can swap anytime.",
+        "label": "Any content",
+        "title": "Text, charts, images, more",
+        "body": "Each panel can be anything: text, chart, image, timeline, KPI. AI picks what works best.",
         "tone": "orange",
-        "mediaLabel": "Flex panels"
-      },
-      {
-        "label": "Living",
-        "title": "Decks that update",
-        "body": "Change your inputs, regenerate. Same structure, fresh content. No rebuilding.",
-        "tone": "blue",
-        "mediaLabel": "Regenerate"
-      }
-    ],
-    "data": [
-      {
-        "label": "Documents",
-        "title": "Upload your files",
-        "body": "CSV, spreadsheets, PDFs, docs - AI reads and understands your company data.",
-        "tone": "blue",
-        "mediaLabel": "Any file type"
-      },
-      {
-        "label": "Media",
-        "title": "Images and videos",
-        "body": "AI analyzes your visuals and picks the right one for each panel automatically.",
-        "tone": "coral",
-        "mediaLabel": "Smart selection"
-      },
-      {
-        "label": "Live data",
-        "title": "Always up to date",
-        "body": "When your data changes, regenerate. AI pulls the latest numbers, charts, and images.",
-        "tone": "orange",
-        "mediaLabel": "Latest state"
+        "mediaLabel": "Flexible"
       }
     ],
     "pricing": [

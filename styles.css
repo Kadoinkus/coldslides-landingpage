@@ -815,28 +815,41 @@ h1{
 .cards--pricing .card{
   padding: 22px;
 }
-.cards--why{
+.cards--framework{
   display:grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
-.cards--why .card{
+.cards--framework .card{
   grid-column: span 1;
-  text-align:center;
-  padding: 28px 22px;
+  text-align:left;
+  padding: 28px 24px;
+  border-left: 4px solid var(--blue);
+  border-radius: 4px var(--radius-lg) var(--radius-lg) 4px;
 }
-.cards--why .card strong{
+.cards--framework .card[data-tone="coral"]{
+  border-left-color: var(--coral);
+}
+.cards--framework .card[data-tone="orange"]{
+  border-left-color: var(--orange);
+}
+.cards--framework .card::after{
+  display: none;
+}
+.cards--framework .card strong{
   display:inline-block;
   padding: 6px 12px;
   border-radius: 999px;
   background: rgba(13,15,18,.06);
   margin-bottom: 14px;
 }
-.cards--why .card h3{
-  font-size: 18px;
+.cards--framework .card h3{
+  font-size: 20px;
+  margin-bottom: 12px;
 }
-.cards--why .card p{
-  font-size: 14px;
+.cards--framework .card p{
+  font-size: 15px;
+  line-height: 1.6;
 }
 .cards--pricing .card{
   background: rgba(255,255,255,.92);
@@ -1102,11 +1115,11 @@ footer{
   }
   .cards .card{ grid-column: span 6; }
   .cards--pricing .card--featured{ transform: none; }
-  .cards--why{ grid-template-columns: repeat(2, 1fr); }
+  .cards--framework{ grid-template-columns: repeat(3, 1fr); }
   .ctaBox{ flex-direction:column; align-items:flex-start; }
 }
 @media (max-width: 620px){
-  .cards--why{ grid-template-columns: 1fr; }
+  .cards--framework{ grid-template-columns: 1fr; }
   .navLinks{ display:none; }
   .hamburger{
     display:inline-flex;

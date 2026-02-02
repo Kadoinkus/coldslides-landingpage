@@ -113,8 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderLinks("navLinks", navLinks);
     renderLinks("footerLinks", navLinks);
     renderLinks("mobileMenu", navLinks);
-    renderCards("featuresCards", cards.features || []);
-    renderCards("dataCards", cards.data || []);
+    renderCards("frameworkCards", cards.framework || []);
     renderCards("pricingCards", cards.pricing || []);
     renderTypePicker("typeGrid", panelTypes);
     renderShowcase("showcaseSteps", showcase);
