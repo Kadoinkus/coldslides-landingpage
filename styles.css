@@ -812,95 +812,239 @@ h1{
 .cards--templates .card{
   padding: 18px;
 }
-.cards--pricing .card{
-  padding: 22px;
+.cards--pricing{
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
 }
-.cards--framework{
-  display:grid;
+.cards--pricing .card{
+  grid-column: span 1;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Framework Section */
+.frameworkGrid{
+  display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
-.cards--framework .card{
-  grid-column: span 1;
-  text-align:left;
-  padding: 28px 24px;
-  border-left: 4px solid var(--blue);
-  border-radius: 4px var(--radius-lg) var(--radius-lg) 4px;
+.frameworkItem{
+  background: rgba(255,255,255,.78);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
 }
-.cards--framework .card[data-tone="coral"]{
-  border-left-color: var(--coral);
+.frameworkText{
+  padding: 24px 24px 20px;
+  flex: 1;
 }
-.cards--framework .card[data-tone="orange"]{
-  border-left-color: var(--orange);
-}
-.cards--framework .card::after{
-  display: none;
-}
-.cards--framework .card strong{
-  display:inline-block;
+.frameworkText strong{
+  display: inline-block;
   padding: 6px 12px;
   border-radius: 999px;
   background: rgba(13,15,18,.06);
-  margin-bottom: 14px;
-}
-.cards--framework .card h3{
-  font-size: 20px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
   margin-bottom: 12px;
 }
-.cards--framework .card p{
-  font-size: 15px;
-  line-height: 1.6;
+.frameworkText h3{
+  margin: 0 0 10px;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  font-weight: 920;
 }
+.frameworkText p{
+  margin: 0;
+  color: rgba(13,15,18,.68);
+  line-height: 1.6;
+  font-weight: 650;
+  font-size: 14px;
+}
+.frameworkVisual{
+  height: 140px;
+  background: rgba(12,14,18,.94);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Layout Demo - shows different grid options */
+.layoutDemo{
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+}
+.layoutOption{
+  width: 70px;
+  height: 100px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  padding: 6px;
+  display: grid;
+  gap: 4px;
+  transition: transform .25s ease, border-color .25s ease, background .25s ease;
+  cursor: pointer;
+}
+.layoutOption:nth-child(1){ grid-template-columns: 1.2fr .8fr; }
+.layoutOption:nth-child(2){ grid-template-columns: 1fr 1fr 1fr; }
+.layoutOption:nth-child(3){ grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.layoutOption:hover, .layoutOption.active{
+  transform: scale(1.08);
+  border-color: var(--blue);
+  background: rgba(83,131,251,.15);
+}
+.lo{
+  background: rgba(255,255,255,.2);
+  border-radius: 4px;
+}
+.layoutOption:hover .lo, .layoutOption.active .lo{
+  background: rgba(83,131,251,.5);
+}
+
+/* Arrange Demo - panels that expand on hover */
+.arrangeDemo{
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  height: 100px;
+  padding: 0 8px;
+}
+.arrangePanel{
+  flex: 1;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 10px;
+  transition: flex .4s cubic-bezier(.4, 0, .2, 1), background .3s ease, border-color .3s ease;
+  cursor: pointer;
+}
+.arrangeDemo:hover .arrangePanel{
+  flex: 0.7;
+}
+.arrangeDemo .arrangePanel:hover{
+  flex: 2;
+  background: rgba(252,96,97,.2);
+  border-color: var(--coral);
+}
+
+/* Content Demo - content type icons */
+.contentDemo{
+  display: flex;
+  gap: 12px;
+}
+.contentIcon{
+  width: 52px;
+  height: 52px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: rgba(255,255,255,.5);
+  transition: transform .25s ease, background .25s ease, color .25s ease, border-color .25s ease;
+  cursor: pointer;
+}
+.contentIcon svg{
+  width: 24px;
+  height: 24px;
+}
+.contentIcon:hover{
+  transform: translateY(-4px);
+  background: rgba(238,133,42,.2);
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
 .cards--pricing .card{
-  background: rgba(255,255,255,.92);
-  border: 1px solid rgba(13,15,18,.12);
+  background: rgba(255,255,255,.95);
+  border: 1px solid rgba(13,15,18,.1);
 }
 .cards--pricing .card::after{
-  opacity:.12;
-  width: 220px;
-  height: 220px;
+  display: none;
+}
+.cards--pricing .card strong{
+  font-size: 11px;
+  color: rgba(13,15,18,.5);
+}
+.cards--pricing .card h3{
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+.cards--pricing .card > p{
+  font-size: 13px;
+  min-height: 40px;
 }
 .cards--pricing .card--featured{
-  border: 1.5px solid rgba(13,15,18,.2);
-  box-shadow: 0 24px 50px rgba(0,0,0,.14);
-  transform: translateY(-6px);
+  border: 2px solid var(--coral);
+  box-shadow: 0 24px 50px rgba(252,96,97,.18);
+  background: #fff;
+  margin-top: 12px;
+  overflow: visible;
 }
 .cards--pricing .card--featured::before{
   content: "Most popular";
   position:absolute;
-  top: 14px;
-  right: 14px;
-  padding: 6px 10px;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 12px;
   border-radius: 999px;
-  background: rgba(13,15,18,.95);
+  background: var(--coral);
   color: #fff;
-  font-size: 11px;
+  font-size: 10px;
   font-weight:900;
   letter-spacing:.08em;
   text-transform:uppercase;
+  white-space: nowrap;
+  z-index: 1;
+}
+.cardPrice{
+  margin: 8px 0 16px;
+}
+.priceValue{
+  font-size: 36px;
 }
 .cardList{
   list-style:none;
   padding:0;
-  margin: 6px 0 2px;
+  margin: 0;
   display:flex;
   flex-direction:column;
-  gap:8px;
-  color: rgba(13,15,18,.74);
-  font-weight:650;
+  gap:10px;
+  color: rgba(13,15,18,.72);
+  font-weight:600;
   font-size: 13px;
+  flex: 1;
+  padding-top: 16px;
+  border-top: 1px solid rgba(13,15,18,.08);
 }
 .cardList li{
   display:flex;
-  align-items:center;
-  gap:8px;
+  align-items:flex-start;
+  gap:10px;
+  line-height: 1.4;
 }
 .cardList li::before{
-  content:"";
-  width:8px;
-  height:8px;
-  border-radius:999px;
-  background: rgba(13,15,18,.55);
+  content:"✓";
+  color: var(--blue);
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.cards--pricing .card--featured .cardList li::before{
+  color: var(--coral);
+}
+.cardBtn{
+  margin-top: 20px;
+  width: 100%;
+  justify-content: center;
 }
 .cardPrice{
   display:flex;
@@ -1156,16 +1300,19 @@ footer{
     max-width: 84%;
     scroll-snap-align: start;
   }
+  .cards--pricing{
+    grid-template-columns: repeat(2, 1fr);
+  }
   .cards--pricing[data-scroll="true"] .card{
     flex-basis: 88%;
     max-width: 88%;
   }
   .cards .card{ grid-column: span 6; }
-  .cards--pricing .card--featured{ transform: none; }
-  .cards--framework{ grid-template-columns: repeat(3, 1fr); }
+  .frameworkGrid{ grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 620px){
-  .cards--framework{ grid-template-columns: 1fr; }
+  .frameworkGrid{ grid-template-columns: 1fr; }
+  .cards--pricing{ grid-template-columns: 1fr; }
   .navLinks{ display:none; }
   .hamburger{
     display:inline-flex;
@@ -1192,6 +1339,9 @@ footer{
   .ctaContent{
     flex-direction: column;
     align-items: flex-start;
+  }
+  .frameworkVisual{
+    height: 120px;
   }
   .footerGrid{
     grid-template-columns: 1fr 1fr;

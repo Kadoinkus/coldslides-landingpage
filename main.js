@@ -47,33 +47,38 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) return;
     const showMedia = container.dataset.media !== "false";
     const showPrice = container.dataset.price === "true";
-    container.innerHTML = cards.map(card => (
-      `<div class=\"card${card.featured ? " card--featured" : ""}\" data-tone=\"${card.tone}\">` +
-        (showMedia ? (() => {
-          const label = card.mediaLabel || card.title;
-          const imageSrc = card.imageSrc;
-          const imageAlt = card.imageAlt || label;
-          if (imageSrc) {
-            return `<div class=\"cardMedia\" data-tone=\"${card.tone}\"><img src=\"${imageSrc}\" alt=\"${imageAlt}\" loading=\"lazy\" decoding=\"async\" /></div>`;
-          }
-          return `<div class=\"cardMedia\" data-tone=\"${card.tone}\"><span>${label}</span></div>`;
-        })() : "") +
-        (showPrice && card.price ? (
-          `<div class=\"cardPrice\">` +
-            `<span class=\"priceValue\">${card.price}</span>` +
-            (card.priceNote ? `<span class=\"priceNote\">${card.priceNote}</span>` : ``) +
-          `</div>`
-        ) : "") +
-        (showPrice && Array.isArray(card.features) ? (
-          `<ul class=\"cardList\">` +
-            card.features.map(item => `<li>${item}</li>`).join("") +
-          `</ul>`
-        ) : "") +
-        `<strong>${card.label}</strong>` +
-        `<h3>${card.title}</h3>` +
-        `<p>${card.body}</p>` +
-      `</div>`
-    )).join("");
+    container.innerHTML = cards.map(card => {
+      const btnVariant = card.featured ? "coral" : "ghost";
+      const btnText = card.price === "Custom" ? "Contact sales" : "Get started";
+      return (
+        `<div class="card${card.featured ? " card--featured" : ""}" data-tone="${card.tone}">` +
+          (showMedia ? (() => {
+            const label = card.mediaLabel || card.title;
+            const imageSrc = card.imageSrc;
+            const imageAlt = card.imageAlt || label;
+            if (imageSrc) {
+              return `<div class="cardMedia" data-tone="${card.tone}"><img src="${imageSrc}" alt="${imageAlt}" loading="lazy" decoding="async" /></div>`;
+            }
+            return `<div class="cardMedia" data-tone="${card.tone}"><span>${label}</span></div>`;
+          })() : "") +
+          `<strong>${card.label}</strong>` +
+          `<h3>${card.title}</h3>` +
+          `<p>${card.body}</p>` +
+          (showPrice && card.price ? (
+            `<div class="cardPrice">` +
+              `<span class="priceValue">${card.price}</span>` +
+              (card.priceNote ? `<span class="priceNote">${card.priceNote}</span>` : ``) +
+            `</div>`
+          ) : "") +
+          (showPrice && Array.isArray(card.features) ? (
+            `<ul class="cardList">` +
+              card.features.map(item => `<li>${item}</li>`).join("") +
+            `</ul>`
+          ) : "") +
+          (showPrice ? `<button class="btn cardBtn" data-variant="${btnVariant}">${btnText}</button>` : "") +
+        `</div>`
+      );
+    }).join("");
   }
 
   function renderTypePicker(containerId, types){
@@ -111,14 +116,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const showcase = data?.showcase || [];
 
     renderLinks("navLinks", navLinks);
-    renderLinks("footerLinks", navLinks);
     renderLinks("mobileMenu", navLinks);
-    renderCards("frameworkCards", cards.framework || []);
     renderCards("pricingCards", cards.pricing || []);
     renderTypePicker("typeGrid", panelTypes);
     renderShowcase("showcaseSteps", showcase);
     setupShowcase();
     setupCardScroll();
+    setupLayoutDemo();
+  }
+
+  function setupLayoutDemo() {
+    const options = document.querySelectorAll(".layoutOption");
+    if (!options.length) return;
+
+    options.forEach((opt) => {
+      opt.addEventListener("mouseenter", () => {
+        options.forEach((o) => o.classList.remove("active"));
+        opt.classList.add("active");
+      });
+    });
   }
 
   function setupCardScroll() {
