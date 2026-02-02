@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>COLDSLIDES — Generate your deck. Shape every panel.</title>
+  <meta name="description" content="Coldslides is a modular slide framework where AI works inside fixed layouts and flexible panels — so you move fast without losing control." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="container">
+    <nav class="nav" aria-label="Top navigation">
+      <a class="brand" href="#">
+        <img class="brandLogo" src="assets/logo/coldslides-logo.svg" alt="Coldslides logo" />
+        <div style="display:flex; flex-direction:column; line-height:1;">
+          <span style="font-size:18px;">COLDSLIDES</span>
+          <span style="font-size:11px; font-weight:500; letter-spacing:.10em;">FRAMEWORK FOR DECKS</span>
+        </div>
+      </a>
+
+      <div class="navLinks" id="navLinks"></div>
+
+      <div class="navCta">
+        <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M4 7h16M4 12h16M4 17h16" stroke="rgba(13,15,18,.85)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="btn" data-variant="primary" id="signupBtn">Sign Up</button>
+      </div>
+    </nav>
+    <div class="mobileMenu" id="mobileMenu" hidden></div>
+  </header>
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container heroGrid">
+        <div>
+          <div class="eyebrow">
+            <span class="dot" data-tone="coral"></span><span class="dot" data-tone="blue"></span><span class="dot" data-tone="orange"></span>
+            AI SLIDE DECK GENERATOR
+          </div>
+
+          <h1>GENERATE<br/>YOUR DECK.</h1>
+
+          <p class="subhead">
+            Coldslides is a modular slide framework where AI works inside <b>fixed layouts</b> and <b>flexible panels</b> —
+            so you move fast without losing control.
+          </p>
+
+          <div class="ctaRow">
+            <button class="btn" data-variant="coral" id="generateBtn">Generate first deck</button>
+            <button class="btn" data-variant="ghost" id="templatesBtn">Explore templates</button>
+          </div>
+
+          <div class="microline">Fixed layouts · Flexible panels · Infinite combinations</div>
+
+          <div class="trustRow" id="trustRow" role="list"></div>
+        </div>
+
+        <div class="visual" aria-label="Product visual mock">
+          <div class="blob coral"></div>
+          <div class="blob blue"></div>
+          <div class="blob orange"></div>
+
+          <!-- Dark UI Mock -->
+          <div class="uiMock" id="uiMock">
+            <div class="uiTopbar">
+              <div class="uiDots" aria-hidden="true"><i></i><i></i><i></i></div>
+              <div class="uiTools" aria-hidden="true">
+                <span class="pill">Panels</span>
+                <span class="pill">Layout</span>
+                <span class="pill">Colors</span>
+              </div>
+            </div>
+
+            <div class="uiBody">
+              <div class="slideCanvas">
+                <div class="layoutGrid" id="layoutGrid">
+                  <!-- Panel 1 -->
+                  <button class="panel big" type="button" data-panel="A">
+                    <div class="panelTitle">Slide Title + Content</div>
+                    <div class="panelTools" aria-hidden="true">
+                      <div class="toolIcon" title="Swap type">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M7 7h10M7 12h7M7 17h10" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                      </div>
+                      <div class="toolIcon" title="Color">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M12 3l6 6-9 9H3v-6l9-9z" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                      <div class="toolIcon" title="Duplicate">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M8 8h12v12H8z" stroke="rgba(255,255,255,.9)" stroke-width="2"/>
+                          <path d="M4 4h12v12H4z" stroke="rgba(255,255,255,.5)" stroke-width="2"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="panelHint">Hover to edit · Click to swap</div>
+                    <div class="badge" data-tone="blue" id="badgeA">Text</div>
+                  </button>
+
+                  <!-- Panel 2 -->
+                  <button class="panel small" type="button" data-panel="B">
+                    <div class="panelTitle">Chart</div>
+                    <div class="panelTools" aria-hidden="true">
+                      <div class="toolIcon" title="Swap type">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M7 7h10M7 12h7M7 17h10" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                      </div>
+                      <div class="toolIcon" title="Color">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M12 3l6 6-9 9H3v-6l9-9z" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="badge" data-tone="coral" id="badgeB">Chart</div>
+                  </button>
+
+                  <!-- Panel 3 -->
+                  <button class="panel small" type="button" data-panel="C">
+                    <div class="panelTitle">Timeline</div>
+                    <div class="panelTools" aria-hidden="true">
+                      <div class="toolIcon" title="Swap type">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M7 7h10M7 12h7M7 17h10" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                      </div>
+                      <div class="toolIcon" title="Duplicate">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M8 8h12v12H8z" stroke="rgba(255,255,255,.9)" stroke-width="2"/>
+                          <path d="M4 4h12v12H4z" stroke="rgba(255,255,255,.5)" stroke-width="2"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="badge" data-tone="orange" id="badgeC">Timeline</div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mascot + pedestal -->
+          <div class="pedestal" aria-hidden="true"></div>
+
+          <div class="mascot" aria-label="Snowman mascot">
+            <!-- Replace src with your actual asset.
+                 If you place the image next to this HTML, use: src="./snowman.png"
+            -->
+            <img src="./snowman.png" alt="Coldslides snowman mascot" onerror="this.style.opacity=.18; this.alt='(Add your snowman image as ./snowman.png)';">
+          </div>
+
+          <!-- Type Picker -->
+          <div class="typePicker" id="typePicker" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Panel type picker" hidden>
+            <header>
+              <span>Panel type</span>
+              <button class="close" id="closePicker">Close</button>
+            </header>
+            <div class="typeGrid" id="typeGrid"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+    <!-- FEATURES (ordered by importance) -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="sectionHead">
+          <h2>A framework that makes AI useful</h2>
+          <p class="lead">
+            Fixed layouts keep slides clean. Flexible panels let AI be creative - and let you stay in control.
+          </p>
+        </div>
+
+        <div class="showcase">
+          <div class="showcaseStepsWrap">
+            <div class="showcaseNav">
+              <button class="showcaseArrow" type="button" id="showcasePrev" aria-label="Previous feature">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="showcaseArrow" type="button" id="showcaseNext" aria-label="Next feature">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+            <div class="showcaseSteps" id="showcaseSteps"></div>
+          </div>
+
+          <div class="showcaseSticky">
+            <div class="showcaseFrame" id="showcaseFrame" data-tone="blue">
+              <div class="showcaseHeader">
+                <span class="showcaseLabel" id="showcaseLabel">Fixed layouts</span>
+                <span class="showcaseTag" id="showcaseTag">Layout</span>
+              </div>
+              <div class="showcaseScreen">
+                <div class="screenHero"></div>
+                <div class="screenSide">
+                  <div class="screenPanel"></div>
+                  <div class="screenPanel"></div>
+                </div>
+              </div>
+              <div class="showcaseFooter">
+                <span class="screenChip" id="showcaseChip">Layout grid</span>
+                <span class="screenNote" id="showcaseNote">Snap-fit panel spacing</span>
+              </div>
+              <p class="showcaseDesc" id="showcaseDesc">
+                Fixed layouts keep structure locked while AI fills each panel intelligently.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cards cards--features" id="featuresCards" data-media="true" data-scroll="true"></div>
+      </div>
+    </section>
+    <!-- TEMPLATES -->
+    <section class="section section--alt" id="templates">
+      <div class="container">
+        <div class="sectionHead">
+          <h2>Start fast. Customize deeply.</h2>
+          <p class="lead">Templates give you structure. Panels give you freedom.</p>
+        </div>
+
+        <div class="templateLead">
+          <div>
+            <h3>Pick a template. Drop in your visuals.</h3>
+            <p>
+              Every template ships with reserved image space, so your brand assets feel
+              intentional instead of squeezed in.
+            </p>
+          </div>
+          <div class="templateHint">
+            <span>Image slots</span>
+            <span>Brand colors</span>
+            <span>Auto layout</span>
+          </div>
+        </div>
+
+        <div class="cards cards--templates" id="templatesCards" data-media="true" data-scroll="true"></div>
+      </div>
+    </section>
+    <!-- PRICING (placeholder section) -->
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="sectionHead">
+          <h2>Pricing</h2>
+          <p class="lead">Keep this simple for now. You can swap in a real pricing table later.</p>
+        </div>
+
+        <div class="cards cards--pricing" id="pricingCards" data-media="false" data-price="true" data-scroll="true"></div>
+      </div>
+    </section>
+    <!-- FINAL CTA -->
+    <section class="ctaBand">
+      <div class="container">
+        <div class="ctaBox">
+          <div>
+            <h2>Stop rebuilding decks.<br/>Start working inside a system.</h2>
+            <p>Generate first. Shape every panel. Reuse decks by topic and keep them up to date.</p>
+          </div>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button class="btn" data-variant="coral" id="ctaGenerate">Generate your first deck</button>
+            <button class="btn" data-variant="primary" id="ctaSignup">Sign up</button>
+          </div>
+        </div>
+
+        <footer>
+          <div class="footerRow">
+            <div>© <span id="year"></span> Coldslides</div>
+            <div style="display:flex; gap:14px; flex-wrap:wrap;" id="footerLinks"></div>
+          </div>
+        </footer>
+      </div>
+    </section>
+  </main>
+  <script type="application/json" id="content-data">
+{
+  "navLinks": [
+    { "label": "Templates", "href": "#templates" },
+    { "label": "Features", "href": "#features" },
+    { "label": "Pricing", "href": "#pricing" }
+  ],
+  "trustItems": [
+    { "title": "No credit card needed", "text": "No credit card required" },
+    { "title": "Works with your organization", "text": "Works with brand assets & data" }
+  ],
+  "showcase": [
+    {
+      "title": "Fixed layout grid",
+      "desc": "Lock the frame once. Every slide stays balanced while content shifts.",
+      "tone": "blue",
+      "label": "Layout system",
+      "tag": "Layout",
+      "chip": "Layout grid",
+      "note": "Snap-fit panel spacing"
+    },
+    {
+      "title": "Flexible panel types",
+      "desc": "Swap any panel from text to chart to image without breaking the grid.",
+      "tone": "coral",
+      "label": "Panel library",
+      "tag": "Panels",
+      "chip": "Swap types",
+      "note": "Instant reflow"
+    },
+    {
+      "title": "Brand visuals ready",
+      "desc": "Reserved image space keeps your snowman, charts, and assets looking intentional.",
+      "tone": "orange",
+      "label": "Brand mode",
+      "tag": "Assets",
+      "chip": "Image slots",
+      "note": "Auto crop"
+    },
+    {
+      "title": "Living decks",
+      "desc": "Regenerate updates without rebuilding slides or changing layouts.",
+      "tone": "blue",
+      "label": "Regenerate",
+      "tag": "Updates",
+      "chip": "Smart refresh",
+      "note": "Version safe"
+    }
+  ],
+  "cards": {
+    "features": [
+      {
+        "label": "Core concept",
+        "title": "Fixed layouts",
+        "body": "Choose a layout and generate instantly. Structure stays consistent - even when content changes.",
+        "tone": "blue",
+        "mediaLabel": "Layout grid"
+      },
+      {
+        "label": "Core concept",
+        "title": "Flexible panels",
+        "body": "Every panel can become anything: text, image, chart, timeline, KPI, quote - without breaking the grid.",
+        "tone": "coral",
+        "mediaLabel": "Panel swap"
+      },
+      {
+        "label": "Editing",
+        "title": "Hover-to-edit UI",
+        "body": "Tools appear only when you need them. Swap panel types, duplicate, delete, and tweak styles in seconds.",
+        "tone": "orange",
+        "mediaLabel": "Edit tools"
+      },
+      {
+        "label": "Generation",
+        "title": "Complete decks",
+        "body": "AI generates structure + content together. You get a real deck, not a blank canvas with text.",
+        "tone": "coral",
+        "mediaLabel": "Deck builder"
+      },
+      {
+        "label": "Brand",
+        "title": "Assets & colors",
+        "body": "Upload brand images once. Coldslides tags, resizes, and reuses them automatically. Choose color variants per slide.",
+        "tone": "blue",
+        "mediaLabel": "Brand kit"
+      },
+      {
+        "label": "Reuse",
+        "title": "Living decks",
+        "body": "Create decks by topic (sales, pitch, updates). Update inputs later and regenerate without starting over.",
+        "tone": "orange",
+        "mediaLabel": "Auto updates"
+      }
+    ],
+    "templates": [
+      {
+        "label": "Template",
+        "title": "Sales deck",
+        "body": "Generate a clean story and tailor each panel for persona, industry, and offer.",
+        "tone": "blue",
+        "mediaLabel": "Sales story"
+      },
+      {
+        "label": "Template",
+        "title": "Pitch deck",
+        "body": "From narrative to visuals - with instant layout consistency.",
+        "tone": "coral",
+        "mediaLabel": "Pitch flow"
+      },
+      {
+        "label": "Template",
+        "title": "Report / update",
+        "body": "Keep recurring decks alive. Regenerate with the newest numbers and visuals.",
+        "tone": "orange",
+        "mediaLabel": "Weekly update"
+      }
+    ],
+    "pricing": [
+      {
+        "label": "Starter",
+        "title": "For individuals",
+        "body": "Generate decks, edit panels, export. Perfect for testing the workflow.",
+        "tone": "blue",
+        "price": "$0",
+        "priceNote": "Early access",
+        "features": [
+          "3 decks per month",
+          "Starter templates",
+          "PDF export"
+        ]
+      },
+      {
+        "label": "Team",
+        "title": "For repeat decks",
+        "body": "Living decks, shared brand assets, templates per topic.",
+        "tone": "coral",
+        "price": "$29",
+        "priceNote": "Per editor / mo",
+        "featured": true,
+        "features": [
+          "Unlimited decks",
+          "Shared brand kit",
+          "Team templates",
+          "PPT + PDF export"
+        ]
+      },
+      {
+        "label": "Enterprise",
+        "title": "For automation",
+        "body": "Remote generation, website embed, deeper integrations.",
+        "tone": "orange",
+        "price": "Let's talk",
+        "priceNote": "Custom terms",
+        "features": [
+          "SSO + admin",
+          "API access",
+          "Dedicated onboarding",
+          "Priority support"
+        ]
+      }
+    ]
+  },
+  "panelTypes": ["Text", "Image", "Chart", "Timeline", "KPI", "Quote"]
+}
+
+</script>
+  <script src="main.js" defer></script>
+</body>
+</html>

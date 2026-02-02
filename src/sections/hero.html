@@ -1,0 +1,133 @@
+<!-- HERO -->
+    <section class="hero">
+      <div class="container heroGrid">
+        <div>
+          <div class="eyebrow">
+            <span class="dot" data-tone="coral"></span><span class="dot" data-tone="blue"></span><span class="dot" data-tone="orange"></span>
+            AI SLIDE DECK GENERATOR
+          </div>
+
+          <h1>GENERATE<br/>YOUR DECK.</h1>
+
+          <p class="subhead">
+            Coldslides is a modular slide framework where AI works inside <b>fixed layouts</b> and <b>flexible panels</b> —
+            so you move fast without losing control.
+          </p>
+
+          <div class="ctaRow">
+            <button class="btn" data-variant="coral" id="generateBtn">Generate first deck</button>
+            <button class="btn" data-variant="ghost" id="templatesBtn">Explore templates</button>
+          </div>
+
+          <div class="microline">Fixed layouts · Flexible panels · Infinite combinations</div>
+
+          <div class="trustRow" id="trustRow" role="list"></div>
+        </div>
+
+        <div class="visual" aria-label="Product visual mock">
+          <div class="blob coral"></div>
+          <div class="blob blue"></div>
+          <div class="blob orange"></div>
+
+          <!-- Dark UI Mock -->
+          <div class="uiMock" id="uiMock">
+            <div class="uiTopbar">
+              <div class="uiDots" aria-hidden="true"><i></i><i></i><i></i></div>
+              <div class="uiTools" aria-hidden="true">
+                <span class="pill">Panels</span>
+                <span class="pill">Layout</span>
+                <span class="pill">Colors</span>
+              </div>
+            </div>
+
+            <div class="uiBody">
+              <div class="slideCanvas">
+                <div class="layoutGrid" id="layoutGrid">
+                  <!-- Panel 1 -->
+                  <button class="panel big" type="button" data-panel="A">
+                    <div class="panelTitle">Slide Title + Content</div>
+                    <div class="panelTools" aria-hidden="true">
+                      <div class="toolIcon" title="Swap type">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M7 7h10M7 12h7M7 17h10" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                      </div>
+                      <div class="toolIcon" title="Color">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M12 3l6 6-9 9H3v-6l9-9z" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                      <div class="toolIcon" title="Duplicate">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M8 8h12v12H8z" stroke="rgba(255,255,255,.9)" stroke-width="2"/>
+                          <path d="M4 4h12v12H4z" stroke="rgba(255,255,255,.5)" stroke-width="2"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="panelHint">Hover to edit · Click to swap</div>
+                    <div class="badge" data-tone="blue" id="badgeA">Text</div>
+                  </button>
+
+                  <!-- Panel 2 -->
+                  <button class="panel small" type="button" data-panel="B">
+                    <div class="panelTitle">Chart</div>
+                    <div class="panelTools" aria-hidden="true">
+                      <div class="toolIcon" title="Swap type">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M7 7h10M7 12h7M7 17h10" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                      </div>
+                      <div class="toolIcon" title="Color">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M12 3l6 6-9 9H3v-6l9-9z" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="badge" data-tone="coral" id="badgeB">Chart</div>
+                  </button>
+
+                  <!-- Panel 3 -->
+                  <button class="panel small" type="button" data-panel="C">
+                    <div class="panelTitle">Timeline</div>
+                    <div class="panelTools" aria-hidden="true">
+                      <div class="toolIcon" title="Swap type">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M7 7h10M7 12h7M7 17h10" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                      </div>
+                      <div class="toolIcon" title="Duplicate">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d="M8 8h12v12H8z" stroke="rgba(255,255,255,.9)" stroke-width="2"/>
+                          <path d="M4 4h12v12H4z" stroke="rgba(255,255,255,.5)" stroke-width="2"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="badge" data-tone="orange" id="badgeC">Timeline</div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mascot + pedestal -->
+          <div class="pedestal" aria-hidden="true"></div>
+
+          <div class="mascot" aria-label="Snowman mascot">
+            <!-- Replace src with your actual asset.
+                 If you place the image next to this HTML, use: src="./snowman.png"
+            -->
+            <img src="./snowman.png" alt="Coldslides snowman mascot" onerror="this.style.opacity=.18; this.alt='(Add your snowman image as ./snowman.png)';">
+          </div>
+
+          <!-- Type Picker -->
+          <div class="typePicker" id="typePicker" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Panel type picker" hidden>
+            <header>
+              <span>Panel type</span>
+              <button class="close" id="closePicker">Close</button>
+            </header>
+            <div class="typeGrid" id="typeGrid"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
