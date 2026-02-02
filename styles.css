@@ -1245,8 +1245,8 @@ h1{
   justify-content: center;
 }
 .layoutOption{
-  width: 70px;
-  height: 100px;
+  width: 96px;
+  height: 60px;
   background: rgba(255,255,255,.06);
   border: 1px solid rgba(255,255,255,.1);
   border-radius: 8px;
