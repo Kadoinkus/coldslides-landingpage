@@ -785,17 +785,20 @@ h1{
   color: rgba(13,15,18,.8);
 }
 .showcaseScreen{
-  min-height: 280px;
+  min-height: 0;
 }
 .deckMock{
   position:relative;
   width:100%;
   max-width: 100%;
-  height: 0;
-  padding-top: 56.25%;
+  aspect-ratio: 16 / 9;
+  height: auto;
   margin: 0 auto;
   flex: 0 0 auto;
+  touch-action: pan-y;
+  cursor: grab;
 }
+.deckMock:active{ cursor: grabbing; }
 .deckMock > .deckCard{
   position:absolute;
   inset: 0;
@@ -814,14 +817,14 @@ h1{
   display:flex;
   flex-direction:column;
   overflow: hidden;
-  font-size: clamp(10px, 2.2vw, 16px);
+  font-size: clamp(11px, 2.6vw, 18px);
 }
 .deckCard:not(.is-active) > *{
   opacity: 0;
 }
 @supports (container-type: inline-size){
   .deckMock{ container-type: inline-size; }
-  .deckCard{ font-size: clamp(10px, 2.4cqw, 16px); }
+  .deckCard{ font-size: clamp(11px, 2.8cqw, 18px); }
 }
 .showcaseFrame[data-slide="0"] .deckCard[data-slide="0"],
 .showcaseFrame[data-slide="1"] .deckCard[data-slide="1"],
@@ -940,13 +943,13 @@ h1{
 .aiBuild{
   display:grid;
   grid-template-columns: 1fr 1fr;
-  gap:12px;
+  gap:.75em;
   align-items:start;
 }
 .aiPrompt{
   display:flex;
   flex-direction:column;
-  gap:6px;
+  gap:.4em;
 }
 .promptTitle{
   font-size: .75em;
@@ -973,7 +976,7 @@ h1{
   width: .15em;
   height: 1.1em;
   background: var(--blue);
-  border-radius: 2px;
+  border-radius: .12em;
   margin-top: .2em;
   animation: blink 1.2s step-end infinite;
 }
@@ -1379,8 +1382,8 @@ h1{
 .imageIcon::after{
   content:"";
   position:absolute;
-  left:4px; right:4px; bottom:3px; top:6px;
-  border-radius: 2px;
+  left:.25em; right:.25em; bottom:.2em; top:.4em;
+  border-radius: .12em;
   background: #e6e9ee;
 }
 .imageLabel{
@@ -1402,15 +1405,15 @@ h1{
 .timelineText{
   display:flex;
   flex-direction:column;
-  gap:6px;
+  gap:.4em;
 }
 .bulletText{
-  font-size: 11px;
+  font-size: .8em;
   font-weight: 700;
   color: #0d0f12;
 }
 .bulletMeta{
-  font-size: 10px;
+  font-size: .7em;
   color: #6b7683;
 }
 .slideIcon{

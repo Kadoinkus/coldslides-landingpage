@@ -613,10 +613,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!frame || !label || !tag || !chip || !note || !desc) return;
 
+    let currentIndex = 0;
+
     const activate = (step) => {
       if (!step) return;
       steps.forEach((item) => item.classList.remove("is-active"));
       step.classList.add("is-active");
+      currentIndex = steps.indexOf(step);
       frame.dataset.tone = step.dataset.tone || "blue";
       frame.dataset.slide = step.dataset.slide || "0";
       const activeSlide = frame.dataset.slide;
@@ -628,6 +631,13 @@ document.addEventListener("DOMContentLoaded", () => {
       chip.textContent = step.dataset.chip || chip.textContent;
       note.textContent = step.dataset.note || note.textContent;
       desc.textContent = step.dataset.desc || desc.textContent;
+    };
+
+    const activateByIndex = (index) => {
+      if (!steps.length) return;
+      const count = steps.length;
+      const nextIndex = ((index % count) + count) % count;
+      activate(steps[nextIndex]);
     };
 
     let dragMoved = false;
@@ -704,6 +714,49 @@ document.addEventListener("DOMContentLoaded", () => {
       stepsContainer.addEventListener("pointerup", endDrag);
       stepsContainer.addEventListener("pointercancel", endDrag);
       stepsContainer.addEventListener("pointerleave", endDrag);
+    }
+
+    // Swipe gestures on the deck itself
+    const deck = frame.querySelector(".deckMock");
+    if (deck) {
+      let pointerDown = false;
+      let startX = 0;
+      let startY = 0;
+      let dragged = false;
+
+      deck.addEventListener("pointerdown", (e) => {
+        if (e.pointerType === "mouse" && e.button !== 0) return;
+        pointerDown = true;
+        dragged = false;
+        startX = e.clientX;
+        startY = e.clientY;
+        deck.setPointerCapture?.(e.pointerId);
+      });
+
+      deck.addEventListener("pointermove", (e) => {
+        if (!pointerDown) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        if (Math.abs(dx) > 6 && Math.abs(dx) > Math.abs(dy)) {
+          dragged = true;
+          e.preventDefault();
+        }
+      });
+
+      const endSwipe = (e) => {
+        if (!pointerDown) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        pointerDown = false;
+        deck.releasePointerCapture?.(e.pointerId);
+        if (dragged && Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+          activateByIndex(currentIndex + (dx < 0 ? 1 : -1));
+        }
+      };
+
+      deck.addEventListener("pointerup", endSwipe);
+      deck.addEventListener("pointercancel", endSwipe);
+      deck.addEventListener("pointerleave", endSwipe);
     }
   }
 
