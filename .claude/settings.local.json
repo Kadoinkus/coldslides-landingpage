@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(powershell -Command \"Select-String -Path main.js -Pattern ''setupSnowyChat|goToConversation|showPreview|typeMessage'' | Select-Object -First 15\")"
+      "Bash(powershell -Command \"Select-String -Path main.js -Pattern ''setupSnowyChat|goToConversation|showPreview|typeMessage'' | Select-Object -First 15\")",
+      "Bash(git -C \"C:\\\\Users\\\\Max Kowalski\\\\Documents\\\\Vibecoding\\\\coldslides-landingpage\" log --oneline -10)"
     ]
   }
 }
