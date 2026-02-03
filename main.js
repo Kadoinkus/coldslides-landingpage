@@ -95,6 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML = items.map((item, index) => (
       `<button class="showcaseStep" type="button" ` +
         `data-tone="${item.tone || "blue"}" ` +
+        `data-slide="${index % 4}" ` +
         `data-label="${item.label || item.title}" ` +
         `data-tag="${item.tag || "Panel"}" ` +
         `data-chip="${item.chip || item.title}" ` +
@@ -617,6 +618,11 @@ document.addEventListener("DOMContentLoaded", () => {
       steps.forEach((item) => item.classList.remove("is-active"));
       step.classList.add("is-active");
       frame.dataset.tone = step.dataset.tone || "blue";
+      frame.dataset.slide = step.dataset.slide || "0";
+      const activeSlide = frame.dataset.slide;
+      frame.querySelectorAll(".deckCard").forEach((card) => {
+        card.classList.toggle("is-active", card.dataset.slide === activeSlide);
+      });
       label.textContent = step.dataset.label || label.textContent;
       tag.textContent = step.dataset.tag || tag.textContent;
       chip.textContent = step.dataset.chip || chip.textContent;

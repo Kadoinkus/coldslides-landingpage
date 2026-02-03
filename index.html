@@ -175,16 +175,160 @@
           </div>
 
           <div class="showcaseSticky">
-            <div class="showcaseFrame" id="showcaseFrame" data-tone="blue">
+            <div class="showcaseFrame" id="showcaseFrame" data-tone="blue" data-slide="0">
               <div class="showcaseHeader">
                 <span class="showcaseLabel" id="showcaseLabel">Step 1</span>
                 <span class="showcaseTag" id="showcaseTag">Layout</span>
               </div>
               <div class="showcaseScreen">
-                <div class="screenHero"></div>
-                <div class="screenSide">
-                  <div class="screenPanel"></div>
-                  <div class="screenPanel"></div>
+                <div class="deckMock">
+                  <div class="deckCard" data-slide="0">
+                    <div class="slideTitle"><span class="slideIcon tone-blue"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4zM4 10h16M9 10v9" stroke="currentColor" stroke-width="2"/></svg></span>Connect your data</div>
+                    <div class="slideSubtitle">Files, sheets, databases</div>
+                    <div class="slideGrid slideGrid--two">
+                      <div class="dropZone">
+                        <div class="dropHeader">Drop files here</div>
+                        <div class="dropItems">
+                          <div class="fileCard">
+                            <span class="fileIcon blue"></span>
+                            <div class="fileMeta">
+                              <div class="fileName">Q3‑pipeline.csv</div>
+                              <div class="fileType">Spreadsheet</div>
+                            </div>
+                          </div>
+                          <div class="fileCard">
+                            <span class="fileIcon coral"></span>
+                            <div class="fileMeta">
+                              <div class="fileName">Brand‑guide.pdf</div>
+                              <div class="fileType">Document</div>
+                            </div>
+                          </div>
+                          <div class="fileCard">
+                            <span class="fileIcon orange"></span>
+                            <div class="fileMeta">
+                              <div class="fileName">Customer‑logos.zip</div>
+                              <div class="fileType">Assets</div>
+                            </div>
+                          </div>
+                          <div class="imageThumbs">
+                            <div class="thumbLabel">Images</div>
+                            <span class="thumb"></span>
+                            <span class="thumb"></span>
+                            <span class="thumb"></span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="dataTable">
+                        <div class="dataRow"></div>
+                        <div class="dataRow"></div>
+                        <div class="dataRow"></div>
+                        <div class="dataRow"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="deckCard" data-slide="1">
+                    <div class="slideTitle"><span class="slideIcon tone-coral"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l4 4-6 6-4-4 6-6zm2 8l4 4-6 6-4-4 6-6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>Add your brand</div>
+                    <div class="slideSubtitle">Logo, colors, typography</div>
+                    <div class="slideGrid slideGrid--brand">
+                      <div class="brandKit">
+                        <div class="brandSection">
+                          <div class="sectionLabel">Colors</div>
+                          <div class="brandSwatches">
+                            <span class="swatch blue"></span>
+                            <span class="swatch coral"></span>
+                            <span class="swatch orange"></span>
+                            <span class="swatch add">+</span>
+                          </div>
+                          <div class="brandHint">Click a color to swap</div>
+                        </div>
+                        <div class="brandSection">
+                          <div class="sectionLabel">Typography</div>
+                          <div class="typePreview">
+                            <div class="typeLine">Aa Inter / 48pt</div>
+                            <div class="typeLine muted">Body / 16pt</div>
+                          </div>
+                          <div class="typeDropdown">
+                            <span>Inter</span>
+                            <span class="dropdownChevron"></span>
+                          </div>
+                        </div>
+                        <div class="brandNote">Applies across every slide</div>
+                      </div>
+                      <div class="logoCard">
+                        <div class="logoMark"></div>
+                        <div class="logoLabel">Logo lockup</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="deckCard" data-slide="2">
+                    <div class="slideTitle"><span class="slideIcon tone-orange"><svg viewBox="0 0 24 24" fill="none"><path d="M6 4l4 4-6 6-4-4 6-6zm8 2l4 4-8 8-4-4 8-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>AI builds the deck</div>
+                    <div class="slideSubtitle">Layouts and visuals</div>
+                    <div class="aiBuild">
+                      <div class="aiPrompt">
+                        <div class="promptTitle">Describe your prompt</div>
+                        <div class="promptBox">
+                          <div class="promptText">Build a Q4 sales deck with 6 slides</div>
+                          <div class="promptCursor"></div>
+                        </div>
+                        <div class="promptAction">
+                          <button type="button">Generate deck</button>
+                        </div>
+                      </div>
+                      <div class="miniDeck">
+                        <div class="miniSlide top">
+                          <div class="miniTitle"></div>
+                          <div class="miniRow"></div>
+                          <div class="miniRow short"></div>
+                        </div>
+                        <div class="miniSlide mid"></div>
+                        <div class="miniSlide back"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="deckCard" data-slide="3">
+                    <div class="slideTitle"><span class="slideIcon tone-blue"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 1 0 8-8M4 12h4M12 4v4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Update anytime</div>
+                    <div class="slideSubtitle">Changes propagate instantly</div>
+                    <div class="slideGrid slideGrid--timeline">
+                      <div class="timelineList">
+                        <div class="timelineItem">
+                          <div class="timelineDot"></div>
+                          <div class="timelineText">
+                            <div class="bulletText">New pricing update</div>
+                            <div class="bulletMeta">Deck refreshed</div>
+                          </div>
+                        </div>
+                        <div class="timelineItem">
+                          <div class="timelineDot"></div>
+                          <div class="timelineText">
+                            <div class="bulletText">Q4 metrics sync</div>
+                            <div class="bulletMeta">Charts updated</div>
+                          </div>
+                        </div>
+                        <div class="timelineItem">
+                          <div class="timelineDot"></div>
+                          <div class="timelineText">
+                            <div class="bulletText">New case study</div>
+                            <div class="bulletMeta">Slides reflowed</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="updatePanel">
+                        <div class="updateTitle">Sync status</div>
+                        <div class="progressRow">
+                          <span>Data refresh</span>
+                          <div class="progressTrack"><div class="progressFill w-80"></div></div>
+                        </div>
+                        <div class="progressRow">
+                          <span>Chart updates</span>
+                          <div class="progressTrack"><div class="progressFill w-60"></div></div>
+                        </div>
+                        <div class="progressRow">
+                          <span>Slide reflow</span>
+                          <div class="progressTrack"><div class="progressFill w-70"></div></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="showcaseFooter">
