@@ -803,24 +803,25 @@ h1{
 .deckCard{
   position:absolute;
   inset: 0;
-  border-radius: 4px;
+  border-radius: .35em;
   background: #fff;
   border: 1px solid #e1e5ea;
-  box-shadow: 0 18px 34px rgba(13,15,18,.12);
+  box-shadow: 0 1.2em 2.4em rgba(13,15,18,.12);
   padding: 1.3em 1.5em;
   opacity:.55;
   transform: translateY(1.3em) scale(.96);
   transition: opacity .2s ease, transform .2s ease;
   display:flex;
   flex-direction:column;
-  font-size: clamp(8px, 1.4vmin, 14px);
+  overflow: hidden;
+  font-size: clamp(10px, 2.2vw, 16px);
 }
 .deckCard:not(.is-active) > *{
   opacity: 0;
 }
-@supports (container-type: size){
-  .deckMock{ container-type: size; }
-  .deckCard{ font-size: clamp(8px, 4.4cqh, 14px); }
+@supports (container-type: inline-size){
+  .deckMock{ container-type: inline-size; }
+  .deckCard{ font-size: clamp(10px, 2.4cqw, 16px); }
 }
 .showcaseFrame[data-slide="0"] .deckCard[data-slide="0"],
 .showcaseFrame[data-slide="1"] .deckCard[data-slide="1"],
@@ -999,7 +1000,7 @@ h1{
   border-radius: .5em;
   background: #fff;
   border: 1px solid #e1e5ea;
-  box-shadow: 0 10px 18px rgba(13,15,18,.08);
+  box-shadow: 0 .8em 1.4em rgba(13,15,18,.08);
 }
 .miniSlide.top{
   transform: translateY(0);
@@ -1101,7 +1102,7 @@ h1{
 .chartBars span{
   display:block;
   width: .7em;
-  border-radius: 4px 4px 2px 2px;
+  border-radius: .4em .4em .2em .2em;
   background: var(--blue);
 }
 .chartBars span:nth-child(2n){
@@ -1298,9 +1299,9 @@ h1{
 .dropdownChevron{
   width: 0;
   height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 5px solid #8a93a0;
+  border-left: .35em solid transparent;
+  border-right: .35em solid transparent;
+  border-top: .45em solid #8a93a0;
 }
 .brandNote{
   font-size: .8em;
@@ -1328,7 +1329,7 @@ h1{
 .logoMark::after{
   content:"";
   position:absolute;
-  inset: 8px 10px;
+  inset: .6em .75em;
   border-radius: .3em;
   background: #e1e6ec;
 }
