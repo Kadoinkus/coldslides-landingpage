@@ -567,14 +567,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function setupCardScroll() {
     const scrollContainers = document.querySelectorAll('[data-scroll="true"]');
+    const isCoarsePointer = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
 
     scrollContainers.forEach((container) => {
-      if (container.scrollWidth <= container.clientWidth + 2) return;
       const isShowcase = container.classList.contains("showcaseSteps");
       let isDragging = false;
       let startX = 0;
       let startScroll = 0;
       let currentX = 0;
+      const hasOverflow = () => container.scrollWidth > container.clientWidth + 2;
 
       const getCardWidth = () => {
         const card = container.querySelector(".card, .platformFeature, .showcaseStep, .previewDeck");
@@ -585,6 +586,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       const scrollToNearestCard = (direction) => {
+        if (!hasOverflow()) return;
         if (isShowcase) {
           const steps = Array.from(container.querySelectorAll(".showcaseStep"));
           if (!steps.length) return;
@@ -627,6 +629,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       const onStart = (x) => {
+        if (!hasOverflow()) return;
         isDragging = true;
         startX = x;
         currentX = x;
@@ -670,15 +673,17 @@ document.addEventListener("DOMContentLoaded", () => {
       container.addEventListener("mouseup", onEnd);
       container.addEventListener("mouseleave", onEnd);
 
-      // Touch events
-      container.addEventListener("touchstart", (e) => {
-        onStart(e.touches[0].pageX);
-      }, { passive: true });
-      container.addEventListener("touchmove", (e) => {
-        if (!isDragging) return;
-        onMove(e.touches[0].pageX);
-      }, { passive: true });
-      container.addEventListener("touchend", onEnd);
+      // Touch events: rely on native scrolling for coarse pointers
+      if (!isCoarsePointer) {
+        container.addEventListener("touchstart", (e) => {
+          onStart(e.touches[0].pageX);
+        }, { passive: true });
+        container.addEventListener("touchmove", (e) => {
+          if (!isDragging) return;
+          onMove(e.touches[0].pageX);
+        }, { passive: true });
+        container.addEventListener("touchend", onEnd);
+      }
     });
   }
 
