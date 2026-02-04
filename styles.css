@@ -1003,6 +1003,96 @@ h1{
     background: var(--blue);
     color: #fff;
   }
+  .editPanel{
+    border: 1px solid #e1e5ea;
+    border-radius: .7em;
+    padding: .8em;
+    background: #fff;
+    display:flex;
+    flex-direction:column;
+    gap:.7em;
+  }
+  .editRow{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:.6em;
+  }
+  .editLabel{
+    font-size: .72em;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color: #8a93a0;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .editChips{
+    display:flex;
+    gap:.4em;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+  .editChip{
+    border: 1px solid rgba(13,15,18,.12);
+    background: #fff;
+    border-radius: 999px;
+    padding: .35em .7em;
+    font-size: .72em;
+    font-weight: 800;
+    color: #0d0f12;
+    cursor:pointer;
+    transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  }
+  .editChip:hover{
+    transform: translateY(-1px);
+  }
+  .editChip.is-active{
+    border-color: rgba(83,131,251,.45);
+    box-shadow: 0 0 0 2px rgba(83,131,251,.15);
+    color: var(--blue);
+  }
+  .exportPanel{
+    border: 1px solid #e1e5ea;
+    border-radius: .7em;
+    padding: .8em;
+    background: #fff;
+    display:flex;
+    flex-direction:column;
+    gap:.7em;
+  }
+  .exportRow{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:.6em;
+  }
+  .exportLabel{
+    font-size: .72em;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color: #8a93a0;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .exportChips{
+    display:flex;
+    gap:.4em;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+  .exportChip{
+    border: 1px solid rgba(13,15,18,.12);
+    background: #fff;
+    border-radius: 999px;
+    padding: .35em .7em;
+    font-size: .72em;
+    font-weight: 800;
+    color: #0d0f12;
+  }
+  .exportHint{
+    font-size: .72em;
+    color: #8a93a0;
+  }
   .syncCard{
     border: 1px solid #e1e5ea;
     border-radius: .7em;
@@ -1099,10 +1189,6 @@ h1{
 @keyframes blink{
     0%, 50%{ opacity:1; }
     51%, 100%{ opacity:0; }
-  }
-  @keyframes dragFloat{
-    0%, 100%{ transform: translateX(0); }
-    50%{ transform: translateX(.25em); }
   }
   @keyframes syncFill{
     0%{ transform: scaleX(.45); transform-origin: left; }
@@ -1228,67 +1314,30 @@ h1{
   }
   .dropZone--simple{
     gap:.7em;
-    cursor:pointer;
   }
-  .dropFlow{
+  .assetIcons{
     display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:.8em;
+    gap:.6em;
     flex-wrap:wrap;
   }
-  .dragChip{
+  .assetIcon{
     display:flex;
     align-items:center;
-    gap:.6em;
-    padding: .5em .6em;
+    gap:.45em;
+    padding: .35em .55em;
     border-radius: .6em;
     background: #fff;
     border: 1px solid #e1e5ea;
-    box-shadow: 0 .8em 1.6em rgba(13,15,18,.08);
-    animation: dragFloat 3.6s ease-in-out infinite;
-    transition: transform .2s ease, box-shadow .2s ease;
-  }
-  .dropZone--simple.is-active .dragChip{
-    transform: translateX(.4em);
-    box-shadow: 0 1.2em 2em rgba(13,15,18,.12);
-  }
-  .dragArrow{
-    width: 1.2em;
-    height: 1.2em;
-    border-radius: 999px;
-    background: rgba(83,131,251,.12);
-    position:relative;
-    flex: 0 0 auto;
-  }
-  .dragArrow::before{
-    content:"";
-    position:absolute;
-    left:.38em;
-    top:.36em;
-    width:.38em;
-    height:.38em;
-    border-right:2px solid var(--blue);
-    border-bottom:2px solid var(--blue);
-    transform: rotate(-45deg);
-  }
-  .dropTarget{
-    flex: 1;
-    min-width: 8em;
-    border: 1px dashed #d7dbe1;
-    border-radius: .6em;
-    padding: .6em .8em;
-    text-align:center;
-    color: #8a93a0;
     font-size: .72em;
-    letter-spacing:.08em;
+    font-weight: 800;
+    letter-spacing:.06em;
     text-transform:uppercase;
-    background: #fff;
+    color: #5a6572;
   }
-  .dropZone--simple.is-active .dropTarget{
-    border-color: rgba(83,131,251,.45);
-    color: var(--blue);
-    background: rgba(83,131,251,.08);
+  .assetIcon .fileIcon{
+    width: 1em;
+    height: 1em;
+    border-radius: .25em;
   }
   .dropHint{
     font-size: .7em;
@@ -1412,29 +1461,6 @@ h1{
   }
   .swatch.is-active{
     box-shadow: 0 0 0 2px rgba(13,15,18,.08), 0 0 0 4px rgba(83,131,251,.25);
-  }
-  .brandPreview{
-    border: 1px solid #e1e5ea;
-    border-radius: .6em;
-    padding: .6em;
-    background: #f7f8fa;
-    display:flex;
-    flex-direction:column;
-    gap:.4em;
-  }
-  .brandPreview .previewDot{
-    width: 1.2em;
-    height: 1.2em;
-    border-radius: .4em;
-    background: var(--blue);
-  }
-  .brandPreview .previewLine{
-    height: .45em;
-    border-radius: 999px;
-    background: #dfe5ec;
-  }
-  .brandPreview .previewLine.short{
-    width: 60%;
   }
 .brandType{
   display:flex;

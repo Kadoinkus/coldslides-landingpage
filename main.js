@@ -512,13 +512,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const scrollContainers = document.querySelectorAll('[data-scroll="true"]');
 
     scrollContainers.forEach((container) => {
+      if (container.scrollWidth <= container.clientWidth + 2) return;
+      const isShowcase = container.classList.contains("showcaseSteps");
       let isDragging = false;
       let startX = 0;
       let startScroll = 0;
       let currentX = 0;
 
       const getCardWidth = () => {
-        const card = container.querySelector(".card, .platformFeature");
+        const card = container.querySelector(".card, .platformFeature, .showcaseStep");
         if (!card) return container.clientWidth * 0.85;
         const style = getComputedStyle(container);
         const gap = parseFloat(style.gap) || 12;
@@ -526,6 +528,31 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       const scrollToNearestCard = (direction) => {
+        if (isShowcase) {
+          const steps = Array.from(container.querySelectorAll(".showcaseStep"));
+          if (!steps.length) return;
+          const rect = container.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          let closestIndex = 0;
+          let minDistance = Infinity;
+          steps.forEach((step, i) => {
+            const r = step.getBoundingClientRect();
+            const stepCenter = r.left + r.width / 2;
+            const distance = Math.abs(stepCenter - centerX);
+            if (distance < minDistance) {
+              minDistance = distance;
+              closestIndex = i;
+            }
+          });
+          if (direction < 0) {
+            closestIndex = Math.max(0, closestIndex - 1);
+          } else if (direction > 0) {
+            closestIndex = Math.min(steps.length - 1, closestIndex + 1);
+          }
+          steps[closestIndex].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+          return;
+        }
+
         const cardWidth = getCardWidth();
         const currentScroll = container.scrollLeft;
         let targetIndex;
@@ -672,8 +699,35 @@ document.addEventListener("DOMContentLoaded", () => {
       updateArrows();
     }
 
-    // Drag/pointer handlers for mobile
+    // Scroll sync: update active step based on closest card in view
     if (stepsContainer) {
+      let scrollRaf = null;
+      const syncToScroll = () => {
+        scrollRaf = null;
+        const containerRect = stepsContainer.getBoundingClientRect();
+        const centerX = containerRect.left + containerRect.width / 2;
+        let closestStep = steps[0];
+        let minDistance = Infinity;
+        steps.forEach((step) => {
+          const rect = step.getBoundingClientRect();
+          const stepCenter = rect.left + rect.width / 2;
+          const distance = Math.abs(stepCenter - centerX);
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestStep = step;
+          }
+        });
+        if (closestStep) activate(closestStep);
+      };
+
+      stepsContainer.addEventListener("scroll", () => {
+        if (scrollRaf) return;
+        scrollRaf = requestAnimationFrame(syncToScroll);
+      }, { passive: true });
+    }
+
+    // Drag/pointer handlers for mobile (skip when using shared scroll snap)
+    if (stepsContainer && stepsContainer.dataset.scroll !== "true") {
       let isDragging = false;
       let startX = 0;
       let startScroll = 0;
@@ -766,23 +820,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const frame = document.getElementById("showcaseFrame");
     if (!frame) return;
 
-    const dropZone = frame.querySelector(".dropZone--simple");
-    if (dropZone) {
-      const activate = () => {
-        dropZone.classList.add("is-active");
-        clearTimeout(dropZone._activeTimer);
-        dropZone._activeTimer = setTimeout(() => {
-          dropZone.classList.remove("is-active");
-        }, 900);
-      };
-      const chip = dropZone.querySelector(".dragChip");
-      dropZone.addEventListener("click", activate);
-      chip?.addEventListener("click", (e) => {
-        e.stopPropagation();
-        activate();
-      });
-    }
-
     const brandKit = frame.querySelector(".brandKit--simple");
     if (brandKit) {
       const previewDot = brandKit.querySelector(".previewDot");
@@ -812,23 +849,19 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    const syncCard = frame.querySelector(".syncCard");
-    const syncBtn = syncCard?.querySelector(".syncBtn");
-    const syncMeta = syncCard?.querySelector(".syncMeta");
-    if (syncCard && syncBtn && syncMeta) {
-      syncBtn.addEventListener("click", () => {
-        syncCard.classList.add("is-refreshing");
-        syncMeta.textContent = "Refreshing...";
-        clearTimeout(syncCard._refreshTimer);
-        syncCard._refreshTimer = setTimeout(() => {
-          syncCard.classList.remove("is-refreshing");
-          syncMeta.textContent = "Last updated just now";
-        }, 1200);
+    const editGroups = frame.querySelectorAll(".editChips");
+    editGroups.forEach((group) => {
+      group.addEventListener("click", (e) => {
+        const chip = e.target.closest(".editChip");
+        if (!chip) return;
+        group.querySelectorAll(".editChip").forEach((btn) => {
+          btn.classList.toggle("is-active", btn === chip);
+        });
       });
-    }
+    });
 
     const interactiveEls = frame.querySelectorAll(
-      ".dropZone--simple, .brandSwatches, .promptAction button, .syncBtn"
+      ".brandSwatches, .promptAction button, .editChip, .exportChip"
     );
     interactiveEls.forEach((el) => {
       el.addEventListener("pointerdown", (e) => {

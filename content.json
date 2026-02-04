@@ -10,40 +10,40 @@
   ],
   "showcase": [
     {
-      "title": "Drop in your data",
-      "desc": "Drag a file or image into the slide. Coldslides extracts what it needs.",
+      "title": "Add your files",
+      "desc": "Images, docs, logos, colors. Bring your assets in once.",
       "tone": "blue",
       "label": "Step 1",
-      "tag": "Drop",
-      "chip": "Drag a file",
-      "note": "Instant read"
+      "tag": "Input",
+      "chip": "Files + brand",
+      "note": "Any format"
     },
     {
-      "title": "Tap your brand",
-      "desc": "Pick a swatch or font. Every slide updates in one click.",
+      "title": "Describe the slides",
+      "desc": "Write what you need. AI generates the full deck.",
       "tone": "coral",
       "label": "Step 2",
-      "tag": "Brand",
-      "chip": "Pick a swatch",
-      "note": "Applies everywhere"
-    },
-    {
-      "title": "Prompt the deck",
-      "desc": "Write the outcome you want. AI builds the slides around it.",
-      "tone": "orange",
-      "label": "Step 3",
       "tag": "Prompt",
       "chip": "Describe it",
       "note": "Draft in seconds"
     },
     {
-      "title": "Sync & refresh",
-      "desc": "Update one source and the deck reflows automatically.",
+      "title": "Customize each slide",
+      "desc": "Swap layouts, visuals, and copy until it feels right.",
+      "tone": "orange",
+      "label": "Step 3",
+      "tag": "Edit",
+      "chip": "Tune it",
+      "note": "Your taste"
+    },
+    {
+      "title": "Share the deck",
+      "desc": "Export as a code snippet, PDF, or PowerPoint file.",
       "tone": "blue",
       "label": "Step 4",
-      "tag": "Sync",
-      "chip": "Refresh data",
-      "note": "Always current"
+      "tag": "Export",
+      "chip": "PDF + PPTX",
+      "note": "Ready to send"
     }
   ],
   "cards": {
