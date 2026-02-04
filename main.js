@@ -122,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderTypePicker("typeGrid", panelTypes);
     renderShowcase("showcaseSteps", showcase);
     setupShowcase();
+    setupShowcaseInteractions();
     setupCardScroll();
     setupLayoutDemo();
     setupSnowyChat();
@@ -611,7 +612,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const prevBtn = document.getElementById("showcasePrev");
     const nextBtn = document.getElementById("showcaseNext");
 
-    if (!frame || !label || !tag || !chip || !note || !desc) return;
+    if (!frame || !label || !tag) return;
 
     let currentIndex = 0;
 
@@ -628,9 +629,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       label.textContent = step.dataset.label || label.textContent;
       tag.textContent = step.dataset.tag || tag.textContent;
-      chip.textContent = step.dataset.chip || chip.textContent;
-      note.textContent = step.dataset.note || note.textContent;
-      desc.textContent = step.dataset.desc || desc.textContent;
+      if (chip) chip.textContent = step.dataset.chip || chip.textContent;
+      if (note) note.textContent = step.dataset.note || note.textContent;
+      if (desc) desc.textContent = step.dataset.desc || desc.textContent;
     };
 
     const activateByIndex = (index) => {
@@ -716,9 +717,10 @@ document.addEventListener("DOMContentLoaded", () => {
       stepsContainer.addEventListener("pointerleave", endDrag);
     }
 
-    // Swipe gestures on the deck itself
+    // Swipe gestures on the deck itself (touch only)
     const deck = frame.querySelector(".deckMock");
-    if (deck) {
+    const enableDeckSwipe = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+    if (deck && enableDeckSwipe) {
       let pointerDown = false;
       let startX = 0;
       let startY = 0;
@@ -758,6 +760,81 @@ document.addEventListener("DOMContentLoaded", () => {
       deck.addEventListener("pointercancel", endSwipe);
       deck.addEventListener("pointerleave", endSwipe);
     }
+  }
+
+  function setupShowcaseInteractions(){
+    const frame = document.getElementById("showcaseFrame");
+    if (!frame) return;
+
+    const dropZone = frame.querySelector(".dropZone--simple");
+    if (dropZone) {
+      const activate = () => {
+        dropZone.classList.add("is-active");
+        clearTimeout(dropZone._activeTimer);
+        dropZone._activeTimer = setTimeout(() => {
+          dropZone.classList.remove("is-active");
+        }, 900);
+      };
+      const chip = dropZone.querySelector(".dragChip");
+      dropZone.addEventListener("click", activate);
+      chip?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        activate();
+      });
+    }
+
+    const brandKit = frame.querySelector(".brandKit--simple");
+    if (brandKit) {
+      const previewDot = brandKit.querySelector(".previewDot");
+      const swatches = Array.from(brandKit.querySelectorAll(".swatch:not(.add)"));
+      swatches.forEach((swatch) => {
+        swatch.addEventListener("click", () => {
+          swatches.forEach((s) => s.classList.remove("is-active"));
+          swatch.classList.add("is-active");
+          const color = swatch.dataset.color || "";
+          const colorMap = {
+            blue: "var(--blue)",
+            coral: "var(--coral)",
+            orange: "var(--orange)",
+          };
+          if (previewDot && colorMap[color]) {
+            previewDot.style.background = colorMap[color];
+          }
+        });
+      });
+    }
+
+    const generateBtn = frame.querySelector('.deckCard[data-slide="2"] .promptAction button');
+    if (generateBtn) {
+      generateBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        toast("Generating slides...");
+      });
+    }
+
+    const syncCard = frame.querySelector(".syncCard");
+    const syncBtn = syncCard?.querySelector(".syncBtn");
+    const syncMeta = syncCard?.querySelector(".syncMeta");
+    if (syncCard && syncBtn && syncMeta) {
+      syncBtn.addEventListener("click", () => {
+        syncCard.classList.add("is-refreshing");
+        syncMeta.textContent = "Refreshing...";
+        clearTimeout(syncCard._refreshTimer);
+        syncCard._refreshTimer = setTimeout(() => {
+          syncCard.classList.remove("is-refreshing");
+          syncMeta.textContent = "Last updated just now";
+        }, 1200);
+      });
+    }
+
+    const interactiveEls = frame.querySelectorAll(
+      ".dropZone--simple, .brandSwatches, .promptAction button, .syncBtn"
+    );
+    interactiveEls.forEach((el) => {
+      el.addEventListener("pointerdown", (e) => {
+        e.stopPropagation();
+      });
+    });
   }
 
   const dom = {
