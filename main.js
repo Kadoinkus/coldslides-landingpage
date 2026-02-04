@@ -126,6 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupCardScroll();
     setupLayoutDemo();
     setupSnowyChat();
+    setupPreviewDecks();
   }
 
   function setupLayoutDemo() {
@@ -508,6 +509,62 @@ document.addEventListener("DOMContentLoaded", () => {
     startAutoAdvance();
   }
 
+  function setupPreviewDecks() {
+    const decks = document.querySelectorAll(".previewDeck");
+    if (!decks.length) return;
+    const transparentPixel = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+
+    decks.forEach((deck) => {
+      const frame = deck.querySelector(".previewFrame");
+      const image = deck.querySelector(".previewImage");
+      const label = deck.querySelector(".previewLabel");
+      const count = deck.querySelector(".previewCount");
+      if (!frame || !image) return;
+
+      const slides = (deck.dataset.slides || "")
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+
+      let index = 0;
+
+      const applySlide = (nextIndex) => {
+        if (!slides.length) {
+          frame.classList.add("is-empty");
+          image.src = transparentPixel;
+          if (label) label.textContent = "Preview";
+          if (count) count.textContent = "";
+          return;
+        }
+
+        index = ((nextIndex % slides.length) + slides.length) % slides.length;
+        const src = slides[index];
+        frame.classList.add("is-empty");
+        image.onload = () => {
+          frame.classList.remove("is-empty");
+        };
+        image.onerror = () => {
+          frame.classList.add("is-empty");
+          image.onerror = null;
+          image.src = transparentPixel;
+        };
+        image.src = src;
+        if (label) label.textContent = `Slide ${String(index + 1).padStart(2, "0")}`;
+        if (count) count.textContent = `${index + 1} / ${slides.length}`;
+      };
+
+      frame.addEventListener("click", () => {
+        if (!slides.length) return;
+        frame.classList.remove("is-advancing");
+        void frame.offsetWidth;
+        frame.classList.add("is-advancing");
+        applySlide(index + 1);
+      });
+
+      applySlide(0);
+    });
+  }
+
   function setupCardScroll() {
     const scrollContainers = document.querySelectorAll('[data-scroll="true"]');
 
@@ -520,7 +577,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let currentX = 0;
 
       const getCardWidth = () => {
-        const card = container.querySelector(".card, .platformFeature, .showcaseStep");
+        const card = container.querySelector(".card, .platformFeature, .showcaseStep, .previewDeck");
         if (!card) return container.clientWidth * 0.85;
         const style = getComputedStyle(container);
         const gap = parseFloat(style.gap) || 12;
